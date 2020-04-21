@@ -1,6 +1,6 @@
 # image-relighting
 
-CS1430 Final Project:
+CS1430 Final Project: Image Relighting
 
 # Team
 
