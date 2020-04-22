@@ -1,2 +1,4 @@
-# Ignore Data once used
+# JetBrains Files
 .idea
+
+# Ignore Data (when we start using some)
