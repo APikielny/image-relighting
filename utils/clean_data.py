@@ -1,7 +1,13 @@
-# Descend into DPR Folder
-# In each image folder:
-#   - Delete all files that are not images or lighting
-#   - Resize all images to input size
+# Script to descend into a DPR folder, remove all excess
+# information and resize images.
+#
+# Usage: python clean_data.py <dir_path> <size>
+# - dir_path: path to a DPR folder containing image folders
+# - size: size to rescale images to
+
+################################################################
+# CAUTION: Will permanently delete all unessesary files in dir #
+################################################################
 
 from PIL import Image
 import os, sys
@@ -47,5 +53,5 @@ else:
         if path[-1] != "/":
             path = path + "/"
         print(path)
-        
+
         clean_data(path, size)
