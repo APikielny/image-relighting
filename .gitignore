@@ -1,4 +1,7 @@
 # JetBrains Files
 .idea
 
+# DS_Store
+**/.DS_Store
+
 # Ignore Data (when we start using some)
