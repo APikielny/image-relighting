@@ -13,6 +13,7 @@ from PIL import Image
 import os, sys
 
 def clean_data(path, size):
+
     # Loop through all folders in the dir
     folders = os.listdir(path)
     for folder in folders:
@@ -35,23 +36,23 @@ def clean_data(path, size):
                 elif folder not in i_name:
                     os.remove(i_path)
 
+# Validate arguments and run script
 if (len(sys.argv) != 3):
-    print("usage: <dir_path> <resize>")
+    print("clean_data usage: <dir_path> <resize>")
 else:
     path = sys.argv[1]
     size  = sys.argv[2]
     if not os.path.isdir(path):
-        print("error: invalid directory")
+        print("clean_data error: invalid directory")
     elif not size.isdigit():
-        print("error: invalid size")
+        print("clean_data error: invalid size")
     else:
         dir_name = os.path.basename(path)
-        print("cleaning folder: " + dir_name)
-        print("resizing images to size: " + size)
+        print("cleaning folder {fold_name}".format(fold_name=dir_name))
+        print("resizing images to {img_size}x{img_size}".format(img_size=size))
 
         size = int(size)
         if path[-1] != "/":
             path = path + "/"
-        print(path)
 
         clean_data(path, size)
