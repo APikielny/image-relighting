@@ -15,6 +15,10 @@ Using their Celeb-HQ dataset, we will train our own neural network and GAN to pr
 portrait images under novel lighting conditions. Once implemented we hope to extend the project
 to allow for easy input for new lighting conditions for a given image.
 
+## Dataset
+Due to computational and storage limitations, we used a scaled down version
+of the Celeb-HQ dataset. The full 128x128 dataset can be found [here](https://drive.google.com/open?id=1v-8FebXQPk5YqlWYYDe7frwy9OkJ24yq)
+
 ## Resources for Network Design
 * [Supplemental paper](https://zhhoper.github.io/paper/zhou_ICCV_2019_DPR_sup.pdf) describing a more
 detailed architecture.
