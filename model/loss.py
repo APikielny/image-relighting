@@ -12,7 +12,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     
     image_loss = img_norm #+ grad_norm
 
-    light_loss = (L_s - L_sp) ** 2
+    light_loss = torch.sum((L_s - L_sp) ** 2)
 
     loss = image_loss + light_loss
 
