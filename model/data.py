@@ -26,7 +26,7 @@ class ImagePair:
 # shapes/formats found in testNetwork_demo_512.py
 def load_data(path):
     img_pairs = []
-    for i in range(1):
+    for i in range(6):
         folder_path = os.path.join(path, 'dpr_{:d}'.format(i*5000))
         img_folders = os.listdir(folder_path)
         for img_folder in img_folders[:1000]:
@@ -45,6 +45,8 @@ def load_data(path):
             L_t = get_lighting(lighting_t_path)
             img_pair = ImagePair(I_s, I_t, L_s, L_t)
             img_pairs.append(img_pair)
+        
+        print("Finished collecting", i + 1, "/6 data folders")
     return img_pairs
 
 

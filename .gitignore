@@ -1,5 +1,6 @@
 # Large Files
 data/*
+result/*
 
 # Misc
 .idea
