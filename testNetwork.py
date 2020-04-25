@@ -116,8 +116,7 @@ for i in range(7):
     Lab[:,:,0] = outputImg
     resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
     resultLab = cv2.resize(resultLab, (col, row))
-    img_name, e = os.path.splitext('data/'+ARGS.image)
-    print(img_name)
+    img_name, e = os.path.splitext(ARGS.image)
     cv2.imwrite(os.path.join(saveFolder,
          '{}_{:02d}.jpg'.format(img_name,i)), resultLab)
     #----------------------------------------------
