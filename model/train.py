@@ -2,7 +2,7 @@ import torch
 from model import HourglassNet
 from loss import L1
 from data import load_data
-import numpy as np
+from random import shuffle
 
 EPOCHS = 10
 BATCH_SIZE = 100
@@ -13,14 +13,11 @@ def train(model, optimizer, data):
     
     for i in range(num_batches):
         total_loss = 0
-
-        batch = np.random.choice(data, BATCH_SIZE)
-
-        for img_pair in batch:
-            I_s = img_pair.I_s
-            I_t = img_pair.I_t
-            L_s = img_pair.L_s
-            L_t = img_pair.L_t
+        for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
+            I_s = data[j].I_s
+            I_t = data[j].I_t
+            L_s = data[j].L_s
+            L_t = data[j].L_t
 
             skip_count = 4
             I_tp, L_sp = model.forward(I_s, L_t, skip_count)
@@ -43,7 +40,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 data = load_data("")
 
 for i in range(EPOCHS):
-    np.random.shuffle(data)
+    shuffle(data)
     train(model, optimizer, data)
 
 # TODO: Save model

@@ -1,7 +1,6 @@
 import numpy as np
 import cv2
 from torch.autograd import Variable
-from torchvision.utils import make_grid
 import torch
 import os
 
@@ -27,9 +26,8 @@ class ImagePair:
 # shapes/formats found in testNetwork_demo_512.py
 def load_data(path):
     img_pairs = []
-
     for i in range(6):
-        folder_path = os.path.join(path, '../data/dpr_{:2d}'.format(i*5000))
+        folder_path = os.path.join(path, 'data/dpr_{:2d}'.format(i*5000))
         img_folders = os.walk(folder_path)
         for img_folder in img_folders:
             pair = np.random.choice(5, 2)
@@ -55,21 +53,18 @@ def load_data(path):
             print("-----------------------------------------------------------")
             print("-----------------------------------------------------------")
 
-    return np.asarray(img_pairs)
+    return img_pairs
 
 
 # will make pulling multiple image pairs from the same folder nice
-def make_image_pair(folder_path):
-    #randomly select two images and their lighting
-    #pass image paths to get_image, and lighting paths to get_lighting
-    img_pair = new ImagePair(I_s, I_t, L_s, L_t)
-    return img_pair
+# def make_image_pair(folder_path):
+#     #randomly select two images and their lighting
+#     #pass image paths to get_image, and lighting paths to get_lighting
+#     img_pair = ImagePair(I_s, I_t, L_s, L_t)
+#     return img_pair
 
 def get_image(path_to_image):
     img = cv2.imread(path_to_image)
-    # row, col, _ = img.shape
-    # img = cv2.resize(img, (512, 512))
-    img = cv2.resize(img, (128, 128)) #we changed this because of reduced image size
     Lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB) #converts image to one color space LAB
 
     inputL = Lab[:,:,0] #taking only the L channel
@@ -82,13 +77,10 @@ def get_image(path_to_image):
     
 
 def get_lighting(path_to_light):
-    sh = np.loadtxt(os.path.join(lightFolder, path_to_light))
+    sh = np.loadtxt(path_to_light)
     sh = sh[0:9]
     sh = sh * 0.7
 
     sh = np.reshape(sh, (1, 9, 1, 1)).astype(np.float32)
     sh = Variable(torch.from_numpy(sh).cuda())
     return sh
-
-
-load_data("")
