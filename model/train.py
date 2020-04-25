@@ -5,7 +5,7 @@ from data import load_data
 from random import shuffle
 import time
 
-EPOCHS = 10
+EPOCHS = 1
 BATCH_SIZE = 100
 
 def train(model, optimizer, data):
@@ -58,6 +58,5 @@ for i in range(EPOCHS):
     end = time.time()
     print("Time elapsed to train epoch #", i + 1,":", end - start)
 
-# TODO: Save model
 print("Done training! Saving model.")
-torch.save(model.state_dict(), '../trained_models/')
+torch.save(model.state_dict(), '../trained_models/model1.pt')
