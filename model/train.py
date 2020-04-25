@@ -4,6 +4,7 @@ from loss import L1
 from data import load_data
 from random import shuffle
 import time
+import os
 
 EPOCHS = 5
 BATCH_SIZE = 100
