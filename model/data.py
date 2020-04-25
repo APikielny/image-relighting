@@ -29,6 +29,7 @@ def load_data(path):
     for i in range(6):
         folder_path = os.path.join(path, 'dpr_{:d}'.format(i*5000))
         img_folders = os.listdir(folder_path)
+        filter(lambda x: "imgHQ" in x, img_folders)
         for img_folder in img_folders:
             img_folder_path = os.path.join(folder_path, img_folder)
             pair = np.random.choice(5, 2)
