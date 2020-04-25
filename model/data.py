@@ -1,9 +1,9 @@
 import os
 import numpy as np
 import cv2
-# from torch.autograd import Variable
-# from torchvision.utils import make_grid
-# import torch
+from torch.autograd import Variable
+from torchvision.utils import make_grid
+import torch
 
 
 class ImagePair:
