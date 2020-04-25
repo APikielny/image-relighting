@@ -27,22 +27,17 @@ class ImagePair:
 def load_data(path):
     img_pairs = []
     for i in range(6):
-        folder_path = os.path.join(path, 'data/dpr_{:2d}'.format(i*5000))
-        img_folders = os.walk(folder_path)
-        for img_folder in img_folders:
+        folder_path = os.path.join(path, 'dpr_{:d}'.format(i*5000))
+        img_folders = os.listdir(folder_path)
+        for img_folder in img_folders[:1000]:
+            img_folder_path = os.path.join(folder_path, img_folder)
             pair = np.random.choice(5, 2)
-            img_folder_path = img_folder[0]
             img_folder_name = img_folder_path[-10:]
-
+            
             image_s_path = os.path.join(img_folder_path, img_folder_name + "_0" + str(pair[0]) + ".jpg")
             image_t_path = os.path.join(img_folder_path, img_folder_name + "_0" + str(pair[1]) + ".jpg")
             lighting_s_path = os.path.join(img_folder_path, img_folder_name + "_light_0" + str(pair[0]) + ".txt")
             lighting_t_path = os.path.join(img_folder_path, img_folder_name + "_light_0" + str(pair[1]) + ".txt")
-
-            print(image_s_path)
-            print(image_t_path)
-            print(lighting_s_path)
-            print(lighting_t_path)
 
             I_s = get_image(image_s_path)
             I_t = get_image(image_t_path)
@@ -50,9 +45,6 @@ def load_data(path):
             L_t = get_lighting(lighting_t_path)
             img_pair = ImagePair(I_s, I_t, L_s, L_t)
             img_pairs.append(img_pair)
-            print("-----------------------------------------------------------")
-            print("-----------------------------------------------------------")
-
     return img_pairs
 
 

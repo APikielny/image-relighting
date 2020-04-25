@@ -37,10 +37,11 @@ model = HourglassNet(gray=True)
 model.cuda()
 model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-data = load_data("")
+data = load_data('../data/')
 
 for i in range(EPOCHS):
     shuffle(data)
     train(model, optimizer, data)
 
 # TODO: Save model
+torch.save(model.state_dict(), '../trained_models/')
