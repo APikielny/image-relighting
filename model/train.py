@@ -4,8 +4,8 @@ from loss import L1
 from random import shuffle
 from data import load_data
 
-EPOCHS = 1
-BATCH_SIZE = 100
+EPOCHS = 100
+BATCH_SIZE = 1
 
 def train(model, optimizer, data):
 
@@ -34,6 +34,7 @@ def train(model, optimizer, data):
         optimizer.step()
 
 model = HourglassNet(gray=False)
+model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 data = load_data('data/train/')
 
