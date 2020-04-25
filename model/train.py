@@ -28,7 +28,7 @@ def parse_args():
 
 
 ARGS = parse_args()
-EPOCHS = ARGS.epochs
+EPOCHS = int(ARGS.epochs)
 BATCH_SIZE = int(ARGS.batch)
 MAX_DATA = int(ARGS.data)
 
