@@ -2,9 +2,10 @@ import torch
 from model import HourglassNet
 from loss import L1
 from data import load_data
+import numpy as np
 
 EPOCHS = 10
-BATCH_SIZE = 1000
+BATCH_SIZE = 100
 
 def train(model, optimizer, data):
 
@@ -13,7 +14,7 @@ def train(model, optimizer, data):
     for i in range(num_batches):
         total_loss = 0
 
-        batch = np.random.choice(data)
+        batch = np.random.choice(data, BATCH_SIZE)
 
         for img_pair in batch:
             I_s = img_pair.I_s
