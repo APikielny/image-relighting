@@ -41,12 +41,6 @@ def load_data(path):
             lighting_s_path = os.path.join(img_folder_path, img_folder_name + "_light_0" + str(pair[0]) + ".txt")
             lighting_t_path = os.path.join(img_folder_path, img_folder_name + "_light_0" + str(pair[1]) + ".txt")
 
-            image_s_path = os.path.join(folder_path, img_folder, image_1_name, img_folder + "_0" + pair[0] + ".jpg")
-            image_t_path = os.path.join(folder_path, img_folder, image_1_name, img_folder + "_0" + pair[1] + ".jpg")
-            lighting_s_path = os.path.join(folder_path, img_folder, image_1_name,
-                                           img_folder + "_light_0" + pair[0] + ".txt")
-            lighting_t_path = os.path.join(folder_path, img_folder, image_1_name,
-                                           img_folder + "_light_0" + pair[1] + ".txt")
             print(image_s_path)
             print(image_t_path)
             print(lighting_s_path)
@@ -56,7 +50,6 @@ def load_data(path):
             I_t = get_image(image_t_path)
             L_s = get_lighting(lighting_s_path)
             L_t = get_lighting(lighting_t_path)
-            L_t = get_lighting(lighing_t_path)
             img_pair = ImagePair(I_s, I_t, L_s, L_t)
             img_pairs.append(img_pair)
             print("-----------------------------------------------------------")
