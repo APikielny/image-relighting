@@ -1,5 +1,3 @@
-# Code taken directly from https://github.com/zhhoper/DPR
-
 '''
     construct shading using sh basis
 '''
