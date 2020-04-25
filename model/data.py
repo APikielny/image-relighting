@@ -24,7 +24,7 @@ class ImagePair:
 # of ImagePairs
 # From each image folder, pull 2 image pairs with corresponding lighting
 # shapes/formats found in testNetwork_demo_512.py
-def load_data(path):
+def load_data(path, max_data):
     img_pairs = []
     for i in range(6):
         folder_path = os.path.join(path, 'dpr_{:d}'.format(i*5000))
@@ -46,6 +46,8 @@ def load_data(path):
             L_t = get_lighting(lighting_t_path)
             img_pair = ImagePair(I_s, I_t, L_s, L_t)
             img_pairs.append(img_pair)
+            if len(img_folder) > max_data:
+                return img_pairs
         
         print("Finished collecting", i + 1, "/6 data folders")
     return img_pairs

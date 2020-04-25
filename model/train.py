@@ -5,9 +5,32 @@ from data import load_data
 from random import shuffle
 import time
 import os
+import argparse
 
-EPOCHS = 5
-BATCH_SIZE = 100
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Training the network")
+    parser.add_argument(
+        '--epochs',
+        default=5,
+        help='the number of EPOCHS to run',
+    )
+    parser.add_argument(
+        '--batch',
+        default='100',
+        help='the batch size'
+    )
+    parser.add_argument(
+        '--data',
+        default=30000,
+        help='size of data to use'
+    )
+
+
+ARGS = parse_args()
+EPOCHS = ARGS.epochs
+BATCH_SIZE = int(ARGS.batch)
+MAX_DATA = int(ARGS.data)
 
 def train(model, optimizer, data):
 
@@ -46,7 +69,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 print("Loading data.")
 start = time.time()
-data = load_data('../data/')
+data = load_data('../data/', MAX_DATA)
 end = time.time()
 print("Loaded data. Size: ", len(data))
 print("Time elapsed:", end - start)
