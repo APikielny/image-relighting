@@ -67,6 +67,11 @@ saveFolder = 'result'
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
+num_saves = os.listdir(saveFolder)
+saveFolder = os.path.join(saveFolder, 'trial_{}'.format(num_saves + 1))
+if not os.path.exists(saveFolder):
+    os.makedirs(saveFolder)
+
 if len(sys.argv) == 2:
     input_image = sys.argv[1]
 if len(sys.argv) == 3:
