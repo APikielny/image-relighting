@@ -11,6 +11,7 @@ BATCH_SIZE = 100
 def train(model, optimizer, data):
 
     num_batches = len(data) // BATCH_SIZE
+    epoch_loss = 0
     
     for i in range(num_batches):
         total_loss = 0
@@ -28,11 +29,14 @@ def train(model, optimizer, data):
             total_loss += loss
 
         total_loss = torch.mean(total_loss)
-        print("Epoch loss: ", total_loss)
+        epoch_loss += total_loss
 
         optimizer.zero_grad()
         total_loss.backward()
         optimizer.step()
+    
+    print("Epoch loss: ", epoch_loss)
+
 
 model = HourglassNet(gray=True)
 model.cuda()
