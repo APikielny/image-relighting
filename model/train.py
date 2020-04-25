@@ -4,8 +4,8 @@ from loss import L1
 from random import shuffle
 from data import load_data
 
-EPOCHS = 100
-BATCH_SIZE = 1
+EPOCHS = 10
+BATCH_SIZE = 100
 
 def train(model, optimizer, data):
 
@@ -39,7 +39,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 data = load_data('data/train/')
 
 for i in range(EPOCHS):
-    data = shuffle(data)
+    shuffle(data)
     train(model, optimizer, data)
 
 # TODO: Save model
