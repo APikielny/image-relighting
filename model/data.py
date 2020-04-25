@@ -28,7 +28,8 @@ class ImagePair:
 def load_data(path):
     img_pairs = []
 
-    for i in range(2):
+    for i in range(6):
+        folder_path = os.path.join(path, '../data/dpr_{:2d}'.format(i*5000))
         img_folders = os.walk(folder_path)
         for img_folder in img_folders:
             pair = np.random.choice(5, 2)
