@@ -4,7 +4,7 @@ from loss import L1
 from data import load_data
 from random import shuffle
 
-EPOCHS = 10
+EPOCHS = 1
 BATCH_SIZE = 100
 
 def train(model, optimizer, data):
@@ -44,4 +44,4 @@ for i in range(EPOCHS):
     train(model, optimizer, data)
 
 # TODO: Save model
-torch.save(model.state_dict(), '../trained_models/')
+torch.save(model.state_dict(), '../trained_models/model1.pt')
