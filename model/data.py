@@ -1,8 +1,3 @@
-from torch.autograd import Variable
-import cv2
-import torch
-import numpy as np
-
 class ImagePair:
     def __init__(self, I_s, I_t, L_s, L_t):
         # Source image

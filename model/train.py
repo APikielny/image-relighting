@@ -33,7 +33,8 @@ def train(model, optimizer, data):
         total_loss.backward()
         optimizer.step()
 
-model = HourglassNet(gray=False)
+model = HourglassNet(gray=True)
+model.cuda()
 model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 data = load_data('data/train/')
