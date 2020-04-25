@@ -12,10 +12,29 @@ import os
 import numpy as np
 
 from torch.autograd import Variable
-from torchvision.utils import make_grid
 import torch
-import time
 import cv2
+import argparse
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="image relighting training.")
+    parser.add_argument(
+        '--image',
+        default='obama.jpg',
+        help='name of image stored in data/',
+    )
+    parser.add_argument(
+        '--model',
+        default='model_2.pt',
+        help='model file to use stored in trained_model/'
+    )
+
+    return parser.parse_args()
+
+
+ARGS = parse_args()
 
 # ---------------- create normal for rendering half sphere ------
 img_size = 256
@@ -48,7 +67,13 @@ saveFolder = 'result'
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
-img = cv2.imread('data/obama.jpg')
+if len(sys.argv) == 2:
+    input_image = sys.argv[1]
+if len(sys.argv) == 3:
+    input_image = sys.argv[1]
+    model = sys.argv[2]
+
+img = cv2.imread('data/{}'.format(ARGS.image))
 row, col, _ = img.shape
 img = cv2.resize(img, (128, 128))
 Lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB) #converts image to one color space LAB
@@ -75,7 +100,7 @@ for i in range(7):
     shading = (shading *255.0).astype(np.uint8)
     shading = np.reshape(shading, (256, 256))
     shading = shading * valid
-    cv2.imwrite(os.path.join(saveFolder, \
+    cv2.imwrite(os.path.join(saveFolder,
             'light_{:02d}.png'.format(i)), shading)
     #--------------------------------------------------
 
@@ -91,6 +116,6 @@ for i in range(7):
     Lab[:,:,0] = outputImg
     resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
     resultLab = cv2.resize(resultLab, (col, row))
-    cv2.imwrite(os.path.join(saveFolder, \
-         'obama_{:02d}.jpg'.format(i)), resultLab)
+    cv2.imwrite(os.path.join(saveFolder,
+         '{}_{:02d}.jpg'.format(os.path.basename('data/'+ARGS.image),i)), resultLab)
     #----------------------------------------------
