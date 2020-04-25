@@ -29,10 +29,16 @@ def load_data(path):
     img_pairs = []
 
     for i in range(2):
-        folder_path = os.path.join(path, '../data/dpr_{:2d}'.format(i * 5000))
-        img_folders = next(os.walk(folder_path))[1]
+        img_folders = os.walk(folder_path)
         for img_folder in img_folders:
             pair = np.random.choice(5, 2)
+            img_folder_path = img_folder[0]
+            img_folder_name = img_folder_path[-10:]
+
+            image_s_path = os.path.join(img_folder_path, img_folder_name + "_0" + str(pair[0]) + ".jpg")
+            image_t_path = os.path.join(img_folder_path, img_folder_name + "_0" + str(pair[1]) + ".jpg")
+            lighting_s_path = os.path.join(img_folder_path, img_folder_name + "_light_0" + str(pair[0]) + ".txt")
+            lighting_t_path = os.path.join(img_folder_path, img_folder_name + "_light_0" + str(pair[1]) + ".txt")
 
             image_s_path = os.path.join(folder_path, img_folder, image_1_name, img_folder + "_0" + pair[0] + ".jpg")
             image_t_path = os.path.join(folder_path, img_folder, image_1_name, img_folder + "_0" + pair[1] + ".jpg")
