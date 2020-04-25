@@ -27,8 +27,14 @@ def train(model, optimizer, data):
             N = I_s.shape[0] * I_s.shape[0]
             loss = L1(N, I_t, I_tp, L_s, L_sp)
             total_loss += loss
-
+            print("Individual loss", loss)
+            
+        print("total loss:", total_loss)
+        print("total loss len:", total_loss)
         total_loss = torch.mean(total_loss)
+        print("Batch loss:", total_loss)
+        print("Batch loss len:", total_loss)
+
         epoch_loss += total_loss
 
         optimizer.zero_grad()
