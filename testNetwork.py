@@ -67,7 +67,7 @@ saveFolder = 'result'
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
-num_saves = os.listdir(saveFolder)
+num_saves = len(os.listdir(saveFolder))
 saveFolder = os.path.join(saveFolder, 'trial_{}'.format(num_saves + 1))
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
