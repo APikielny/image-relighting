@@ -1,23 +1,25 @@
 import torch
 from model import HourglassNet
 from loss import L1
-from random import shuffle
 from data import load_data
 
 EPOCHS = 10
-BATCH_SIZE = 100
+BATCH_SIZE = 1000
 
 def train(model, optimizer, data):
 
     num_batches = len(data) // BATCH_SIZE
-
+    
     for i in range(num_batches):
         total_loss = 0
-        for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
-            I_s = data[j].I_s
-            I_t = data[j].I_t
-            L_s = data[j].L_s
-            L_t = data[j].L_t
+
+        batch = np.random.choice(data)
+
+        for img_pair in batch:
+            I_s = img_pair.I_s
+            I_t = img_pair.I_t
+            L_s = img_pair.L_s
+            L_t = img_pair.L_t
 
             skip_count = 4
             I_tp, L_sp = model.forward(I_s, L_t, skip_count)
@@ -37,10 +39,10 @@ model = HourglassNet(gray=True)
 model.cuda()
 model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-data = load_data('data/train/')
+data = load_data("")
 
 for i in range(EPOCHS):
-    shuffle(data)
+    np.random.shuffle(data)
     train(model, optimizer, data)
 
 # TODO: Save model

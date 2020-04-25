@@ -21,8 +21,8 @@ class ImagePair:
 def load_data(path):
     img_pairs = []
 
-    for i in range(6):
-        folder_path = os.path.join(path, 'data/dpr_{:2d}'.format(i*5000))
+    for i in range(2):
+        folder_path = os.path.join(path, '../data/dpr_{:2d}'.format(i*5000))
         img_folders = next(os.walk(folder_path))[1]
         for img_folder in img_folders:
             pair = np.random.choice(5, 2)
@@ -47,7 +47,7 @@ def load_data(path):
         
 
 
-    return img_pairs
+    return np.asarray(img_pairs)
 
 # will make pulling multiple image pairs from the same folder nice
 # def make_image_pair(folder_path):
@@ -82,4 +82,4 @@ def get_lighting(path_to_light):
     return sh
 
 
-load_data("~/Downloads")
+load_data("")
