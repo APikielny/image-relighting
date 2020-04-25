@@ -5,7 +5,7 @@ from data import load_data
 from random import shuffle
 import time
 
-EPOCHS = 1
+EPOCHS = 5
 BATCH_SIZE = 100
 
 def train(model, optimizer, data):
