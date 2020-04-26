@@ -77,8 +77,8 @@ def train(model, optimizer, data):
         I_tbatch = torch.squeeze(I_tbatch, dim=1)
         L_sbatch = torch.squeeze(L_sbatch, dim=1)
 
-        print("I_s batch shape squeeze:", I_sbatch.shape)
-        print("L_t batch shape squeeze:", L_tbatch.shape)
+        # print("I_s batch shape squeeze:", I_sbatch.shape)
+        # print("L_t batch shape squeeze:", L_tbatch.shape)
 
         I_tp_batch, L_sp_batch = model.forward(I_sbatch, L_tbatch, skip_count)
 
