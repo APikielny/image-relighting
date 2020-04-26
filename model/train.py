@@ -15,7 +15,7 @@ def train(model, optimizer, data):
     
     for i in range(num_batches):
         # num_losses = 0
-        total_loss = torch.tensor([0], dtype=torch.float32)
+        total_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
         # total_loss = []
 

@@ -29,7 +29,7 @@ def load_data(path):
     for i in range(1):
         folder_path = os.path.join(path, 'dpr_{:d}'.format(i*5000))
         img_folders = os.listdir(folder_path)
-        for img_folder in img_folders[:500]:
+        for img_folder in img_folders[:200]:
             img_folder_path = os.path.join(folder_path, img_folder)
             pair = np.random.choice(5, 2)
             img_folder_name = img_folder_path[-10:]
