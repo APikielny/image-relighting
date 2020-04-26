@@ -4,6 +4,7 @@ from loss import L1
 from data import load_data
 from random import shuffle
 import time
+import os
 
 EPOCHS = 5
 BATCH_SIZE = 100
@@ -35,7 +36,9 @@ def train(model, optimizer, data):
             total_loss += loss
             # total_loss.append(loss)
    
+        total_loss = total_loss // BATCH_SIZE
         print("total loss:", total_loss)
+
 
         # total_loss = torch.sum(total_loss)
 
