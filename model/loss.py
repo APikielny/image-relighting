@@ -6,6 +6,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     print("in single loss!")
 
     print("I_t shape", I_t.shape)
+    print("I_tp shape", I_tp.shape)
 
     print("abs shape", torch.abs(I_t - I_tp).shape)
 
@@ -27,10 +28,11 @@ def L1(N, I_t, I_tp, L_s, L_sp):
 
     light_loss = torch.sum((L_s - L_sp) ** 2)
 
-    print("light shape", L_s.shape)
+    print("Ls shape", L_s.shape)
+    print("Lsp shape", L_sp.shape)
 
-    print("light:", light_loss)
-    print("light shape:", light_loss.shape)
+    print("light loss:", light_loss)
+    print("light loss shape:", light_loss.shape)
 
 
     loss = image_loss + light_loss
