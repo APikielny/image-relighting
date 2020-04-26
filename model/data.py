@@ -81,3 +81,36 @@ def get_lighting(path_to_light):
     sh = np.reshape(sh, (1, 9, 1, 1)).astype(np.float32)
     sh = Variable(torch.from_numpy(sh).cuda())
     return sh
+from torch.utils.data import Dataset, DataLoader
+class CelebData(Dataset):
+    def __init__(self, root_dir):
+        self.root_dir = root_dir
+    def __len__(self):
+        return 30000
+    def __getitem__(self, idx):
+        for i in range(6):
+            folder_path = os.path.join(self.root_dir, 'dpr_{:d}'.format(i * 5000))
+            img_folders = os.listdir(folder_path)
+            filter(lambda x: str(idx) in x, img_folders)
+            if len(img_folders) != 0:
+                path = os.path.join(folder_path, img_folders[0])
+
+                pair = np.random.choice(5, 2)
+                img_folder_name = path[-10:]
+
+                image_s_path = os.path.join(path, img_folder_name + "_0" + str(pair[0]) + ".jpg")
+                image_t_path = os.path.join(path, img_folder_name + "_0" + str(pair[1]) + ".jpg")
+                lighting_s_path = os.path.join(path, img_folder_name + "_light_0" + str(pair[0]) + ".txt")
+                lighting_t_path = os.path.join(path, img_folder_name + "_light_0" + str(pair[1]) + ".txt")
+
+                I_s = get_image(image_s_path)
+                I_t = get_image(image_t_path)
+                L_s = get_lighting(lighting_s_path)
+                L_t = get_lighting(lighting_t_path)
+                img_pair = ImagePair(I_s, I_t, L_s, L_t)
+
+                return img_pair
+
+
+
+
