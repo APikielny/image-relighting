@@ -26,6 +26,10 @@ def parse_args():
         default=30000,
         help='size of data to use'
     )
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='print additional information if true')
 
     return parser.parse_args()
 
@@ -34,10 +38,14 @@ ARGS = parse_args()
 EPOCHS = int(ARGS.epochs)
 BATCH_SIZE = int(ARGS.batch)
 MAX_DATA = int(ARGS.data)
+VERBOSE = bool(ARGS.verbose)
 
 
 def train(model, optimizer, data):
+
     num_batches = len(data) // BATCH_SIZE
+    if (VERBOSE):
+        print("Num batches: ", num_batches)
 
     epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
@@ -50,7 +58,6 @@ def train(model, optimizer, data):
 
         for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
             
-
             I_s = data[j].I_s
             I_t = data[j].I_t
             L_s = data[j].L_s
@@ -65,7 +72,8 @@ def train(model, optimizer, data):
             # total_loss.append(loss)
    
         total_loss = total_loss / BATCH_SIZE
-        print("Batch loss:", total_loss)
+        if (VERBOSE):
+            print("Batch loss:", total_loss)
 
 
         epoch_loss += total_loss
