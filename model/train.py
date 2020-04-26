@@ -5,6 +5,7 @@ from data import load_data
 from random import shuffle
 import time
 import os
+import numpy as np
 
 EPOCHS = 5
 BATCH_SIZE = 100
@@ -12,7 +13,7 @@ BATCH_SIZE = 100
 def train(model, optimizer, data):
 
     num_batches = len(data) // BATCH_SIZE
-    epoch_loss = 0
+    epoch_loss = []
     
     for i in range(num_batches):
         # num_losses = 0
@@ -42,13 +43,13 @@ def train(model, optimizer, data):
 
         # total_loss = torch.sum(total_loss)
 
-        epoch_loss += total_loss
+        epoch_loss.append(total_loss)
 
         optimizer.zero_grad()
         total_loss.backward()
         optimizer.step()
-    
-    print("Epoch loss: ", epoch_loss)
+
+    print("Epoch loss: ", np.mean(np.array(epoch_loss)))
 
 
 model = HourglassNet(gray=True)
