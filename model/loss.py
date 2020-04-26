@@ -10,7 +10,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
 
     print("abs shape", torch.abs(I_t - I_tp).shape)
 
-    img_norm = torch.mean(torch.abs(I_t - I_tp))
+    img_norm = torch.mean(torch.abs(I_t - I_tp)) #this takes the mean across all dimensions which i think is fine?
     print("img norm:", img_norm)
     print("img norm shape:", img_norm.shape)
 
@@ -26,7 +26,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     
     image_loss = img_norm #+ grad_norm
 
-    light_loss = torch.sum((L_s - L_sp) ** 2)
+    light_loss = torch.mean((L_s - L_sp) ** 2)
 
     print("Ls shape", L_s.shape)
     print("Lsp shape", L_sp.shape)
