@@ -9,6 +9,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
 
     grad_norm = 0
     if (I_t.grad != None):
+        print("I_t not none!")
         grad_norm = torch.mean(torch.abs(I_t.grad - I_tp.grad))
 
 
