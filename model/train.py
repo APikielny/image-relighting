@@ -14,6 +14,7 @@ def train(model, optimizer, data):
     epoch_loss = 0
     
     for i in range(num_batches):
+        num_losses = 0
         total_loss = -1 #not sure about this
         for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
             
@@ -28,17 +29,22 @@ def train(model, optimizer, data):
 
             N = I_s.shape[0] * I_s.shape[0]
             loss = L1(N, I_t, I_tp, L_s, L_sp)
-        if (total_loss == -1):
-            total_loss = loss
-        else:
-            total_loss = torch.cat((total_loss, loss)
+
+            num_losses += 1
+
+            total_loss
+
+        # if (total_loss == -1):
+        #     total_loss = loss
+        # else:
+        #     total_loss = torch.cat((total_loss, loss)
             # total_loss = torch.cat((total_loss, loss))
             # print("Individual loss", loss)
-
-            
+   
         print("total loss:", total_loss)
 
-        total_loss = torch.mean(total_loss)
+        # total_loss = torch.mean(total_loss)
+        total_loss /= num_losses
 
         print("total loss divided: ", total_loss)
 
