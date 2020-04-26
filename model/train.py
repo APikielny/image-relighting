@@ -1,10 +1,12 @@
 import torch
 from model import HourglassNet
 from loss import L1
+from data import load_data
 from random import shuffle
 import time
 import os
 import argparse
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -33,11 +35,11 @@ EPOCHS = int(ARGS.epochs)
 BATCH_SIZE = int(ARGS.batch)
 MAX_DATA = int(ARGS.data)
 
-def train(model, optimizer, data):
 
+def train(model, optimizer, data):
     num_batches = len(data) // BATCH_SIZE
     epoch_loss = 0
-    
+
     for i in range(num_batches):
         total_loss = 0
         for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
@@ -59,7 +61,7 @@ def train(model, optimizer, data):
         optimizer.zero_grad()
         total_loss.backward()
         optimizer.step()
-    
+
     print("Epoch loss: ", epoch_loss)
 
 
@@ -81,8 +83,8 @@ for i in range(EPOCHS):
     shuffle(data)
     train(model, optimizer, data)
     end = time.time()
-    print("Time elapsed to train epoch #", i + 1,":", end - start)
+    print("Time elapsed to train epoch #", i + 1, ":", end - start)
 
 print("Done training! Saving model.")
 num_models = len(os.listdir('../trained_models/'))
-torch.save(model.state_dict(), '../trained_models/model_{:d}.pt'.format(num_models +  1))
+torch.save(model.state_dict(), '../trained_models/model_{:d}.pt'.format(num_models + 1))
