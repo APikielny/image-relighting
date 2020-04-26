@@ -44,8 +44,8 @@ VERBOSE = bool(ARGS.verbose)
 def train(model, optimizer, data):
 
     num_batches = len(data) // BATCH_SIZE
-    if (VERBOSE):
-        print("Num batches: ", num_batches)
+    # if (VERBOSE):
+    #     print("Num batches: ", num_batches)
 
     epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
