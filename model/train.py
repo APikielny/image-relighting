@@ -15,7 +15,7 @@ def train(model, optimizer, data):
     
     for i in range(num_batches):
         # num_losses = 0
-        total_loss = torch.tensor([0])
+        total_loss = torch.tensor([0], requires_grad = True)
         for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
             
 
