@@ -52,7 +52,7 @@ def train(model, optimizer, data):
     for j, data in enumerate(dataloader, 0):
         total_loss = torch.tensor([0], dtype=torch.float32).cuda()
         I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
-        for k in range(BATCH_SIZE):
+        for k in range(len(I_sbatch)):
             I_s = I_sbatch[k]
             I_t = I_tbatch[k]
             L_s = L_sbatch[k]
