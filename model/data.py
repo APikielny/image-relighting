@@ -6,7 +6,7 @@ import os
 from torch.utils.data import Dataset
 
 class CelebData(Dataset):
-    def __init__(self, root_dir):
+    def __init__(self, root_dir, max_data):
         paths = []
         for i in range(6):
             folder_path = os.path.join(root_dir, 'dpr_{:d}'.format(i * 5000))
@@ -15,6 +15,10 @@ class CelebData(Dataset):
                 path = os.path.join(folder_path, img_folder)
                 if os.path.isdir(path):
                     paths.append(path)
+                    if len(paths) == max_data:
+                        break
+            if len(paths) == max_data:
+                break
         self.paths = paths
 
     def __len__(self):

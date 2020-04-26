@@ -23,7 +23,7 @@ def parse_args():
     )
     parser.add_argument(
         '--data',
-        default=30000,
+        default='30000',
         help='size of data to use'
     )
 
@@ -75,7 +75,7 @@ model.cuda()
 model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-dataset = CelebData('../data/')
+dataset = CelebData('../data/', int(ARGS.data))
 dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 for i in range(EPOCHS):
     start = time.time()
