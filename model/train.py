@@ -38,11 +38,19 @@ MAX_DATA = int(ARGS.data)
 
 def train(model, optimizer, data):
     num_batches = len(data) // BATCH_SIZE
-    epoch_loss = 0
 
+    epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
+
+    
     for i in range(num_batches):
-        total_loss = 0
+        # num_losses = 0
+        total_loss = torch.tensor([0], dtype=torch.float32).cuda()
+        
+        # total_loss = []
+
         for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
+            
+
             I_s = data[j].I_s
             I_t = data[j].I_t
             L_s = data[j].L_s
@@ -54,14 +62,19 @@ def train(model, optimizer, data):
             N = I_s.shape[0] * I_s.shape[0]
             loss = L1(N, I_t, I_tp, L_s, L_sp)
             total_loss += loss
+            # total_loss.append(loss)
+   
+        total_loss = total_loss / BATCH_SIZE
+        print("Batch loss:", total_loss)
 
-        total_loss = torch.mean(total_loss)
+
         epoch_loss += total_loss
 
         optimizer.zero_grad()
         total_loss.backward()
         optimizer.step()
 
+    epoch_loss = epoch_loss / num_batches
     print("Epoch loss: ", epoch_loss)
 
 
