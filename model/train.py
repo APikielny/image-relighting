@@ -52,18 +52,30 @@ def train(model, optimizer, data):
     for j, data in enumerate(dataloader, 0):
         total_loss = torch.tensor([0], dtype=torch.float32).cuda()
         I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
-        for k in range(BATCH_SIZE):
-            I_s = I_sbatch[k]
-            I_t = I_tbatch[k]
-            L_s = L_sbatch[k]
-            L_t = L_tbatch[k]
 
-            skip_count = 4
-            I_tp, L_sp = model.forward(I_s, L_t, skip_count)
+        # for k in range(BATCH_SIZE):
+        #     I_s = I_sbatch[k]
+        #     I_t = I_tbatch[k]
+        #     L_s = L_sbatch[k]
+        #     L_t = L_tbatch[k]
 
-            N = I_s.shape[0] * I_s.shape[0]
-            loss = L1(N, I_t, I_tp, L_s, L_sp)
-            total_loss += loss
+        #     skip_count = 4
+        #     I_tp, L_sp = model.forward(I_s, L_t, skip_count)
+
+        #     N = I_s.shape[0] * I_s.shape[0]
+        #     loss = L1(N, I_t, I_tp, L_s, L_sp)
+        #     total_loss += loss
+
+
+        skip_count = 4
+        print("I_s batch shape:", I_sbatch.shape)
+        print("L_t batch shape:", L_tbatch.shape)
+
+        I_tp, L_sp = model.forward(I_sbatch, L_tbatch, skip_count)
+
+            # N = I_s.shape[0] * I_s.shape[0]
+            # loss = L1(N, I_t, I_tp, L_s, L_sp)
+            # total_loss += loss
 
         total_loss = total_loss / BATCH_SIZE
         if (VERBOSE):
