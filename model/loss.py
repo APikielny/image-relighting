@@ -1,31 +1,31 @@
 from skimage import filters
 import torch
 
-# def L1(N, I_t, I_tp, L_s, L_sp):
+def L1(N, I_t, I_tp, L_s, L_sp):
 
-#     img_norm = torch.mean(torch.abs(I_t - I_tp))
+    img_norm = torch.mean(torch.abs(I_t - I_tp))
 
-#     #grad_norm = torch.norm(I_t.grad - I_tp.grad)
+    #grad_norm = torch.norm(I_t.grad - I_tp.grad)
 
-#     grad_norm = 0
-#     if (I_t.grad != None):
-#         print("I_t not none!")
-#         grad_norm = torch.mean(torch.abs(I_t.grad - I_tp.grad))
-
-
-#     # np_grad = filters.gaussian(I_t.cpu().detach().numpy()) - filters.gaussian(I_tp.cpu().detach().numpy())
-#     # grad_norm = torch.norm(torch.from_numpy(np_grad))
-
-    
-#     image_loss = img_norm + grad_norm
-
-#     light_loss = torch.sum((L_s - L_sp) ** 2)
+    grad_norm = 0
+    if (I_t.grad != None):
+        print("I_t not none!")
+        grad_norm = torch.mean(torch.abs(I_t.grad - I_tp.grad))
 
 
-#     loss = image_loss + light_loss
+    # np_grad = filters.gaussian(I_t.cpu().detach().numpy()) - filters.gaussian(I_tp.cpu().detach().numpy())
+    # grad_norm = torch.norm(torch.from_numpy(np_grad))
 
     
-#     return loss
+    image_loss = img_norm + grad_norm
+
+    light_loss = torch.sum((L_s - L_sp) ** 2)
+
+
+    loss = image_loss + light_loss
+
+    
+    return loss
 
 #L1 loss for a whole batch
 def L1_batch(N, I_t, I_tp, L_s, L_sp):

@@ -1,6 +1,6 @@
 import torch
 from model import HourglassNet
-from loss import L1_batch
+from loss import L1_batch, L1
 from torch.utils.data import DataLoader
 from data import CelebData
 import time
@@ -80,7 +80,7 @@ def train(model, optimizer, data):
         I_tp_batch, L_sp_batch = model.forward(I_sbatch, L_tbatch, skip_count)
 
         N = I_sbatch.shape[2] * I_sbatch.shape[2]
-        loss = L1_batch(N, I_tbatch, I_tp_batch, L_sbatch, L_sp_batch)
+        loss = L1(N, I_tbatch, I_tp_batch, L_sbatch, L_sp_batch)
         # total_loss += loss
 
         #total_loss = total_loss / BATCH_SIZE
