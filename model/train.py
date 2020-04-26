@@ -69,11 +69,11 @@ def train(model, optimizer, dataloader):
         # print("I_s batch shape:", I_sbatch.shape)
         # print("L_t batch shape:", L_tbatch.shape)
 
-        I_sbatch = torch.squeeze(I_sbatch, dim=1)
-        L_tbatch = torch.squeeze(L_tbatch, dim=1)
+        I_sbatch = torch.squeeze(I_sbatch, dim=1).cuda()
+        L_tbatch = torch.squeeze(L_tbatch, dim=1).cuda()
 
-        I_tbatch = torch.squeeze(I_tbatch, dim=1)
-        L_sbatch = torch.squeeze(L_sbatch, dim=1)
+        I_tbatch = torch.squeeze(I_tbatch, dim=1).cuda()
+        L_sbatch = torch.squeeze(L_sbatch, dim=1).cuda()
 
         # print("I_s batch shape squeeze:", I_sbatch.shape)
         # print("L_t batch shape squeeze:", L_tbatch.shape)
@@ -104,7 +104,7 @@ model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 dataset = CelebData('../data/', int(ARGS.data))
-dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4, pin_memory=True)
 for i in range(EPOCHS):
     start = time.time()
     print("Training epoch #", i + 1, "/", EPOCHS)

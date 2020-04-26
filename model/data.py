@@ -50,7 +50,7 @@ def get_image(path_to_image):
     inputL = inputL.astype(np.float32) / 255.0  # normalise
     inputL = inputL.transpose((0, 1))
     inputL = inputL[None, None, ...]  # not sure what's happening here
-    inputL = Variable(torch.from_numpy(inputL)).cuda()
+    inputL = Variable(torch.from_numpy(inputL))
 
     return inputL
 
@@ -61,5 +61,5 @@ def get_lighting(path_to_light):
     sh = sh * 0.7
 
     sh = np.reshape(sh, (1, 9, 1, 1)).astype(np.float32)
-    sh = Variable(torch.from_numpy(sh).cuda())
+    sh = Variable(torch.from_numpy(sh))
     return sh
