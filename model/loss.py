@@ -5,6 +5,10 @@ def L1(N, I_t, I_tp, L_s, L_sp):
 
     print("in single loss!")
 
+    print("I_t shape", I_t.shape)
+
+    print("abs shape", torch.abs(I_t - I_tp).shape)
+
     img_norm = torch.mean(torch.abs(I_t - I_tp))
     print("img norm:", img_norm)
     print("img norm shape:", img_norm.shape)
@@ -22,6 +26,8 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     image_loss = img_norm #+ grad_norm
 
     light_loss = torch.sum((L_s - L_sp) ** 2)
+
+    print("light shape", L_s.shape)
 
     print("light:", light_loss)
     print("light shape:", light_loss.shape)
