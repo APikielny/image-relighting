@@ -74,8 +74,8 @@ def train(model, optimizer, data):
         I_sbatch = torch.squeeze(I_sbatch, dim=1)
         L_tbatch = torch.squeeze(L_tbatch, dim=1)
 
-        I_tbatch = torch.squeeze(I_sbatch, dim=1)
-        L_sbatch = torch.squeeze(L_tbatch, dim=1)
+        I_tbatch = torch.squeeze(I_tbatch, dim=1)
+        L_sbatch = torch.squeeze(L_sbatch, dim=1)
 
         print("I_s batch shape squeeze:", I_sbatch.shape)
         print("L_t batch shape squeeze:", L_tbatch.shape)
