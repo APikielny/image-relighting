@@ -28,7 +28,7 @@ def train(model, optimizer, data):
             I_tp, L_sp = model.forward(I_s, L_t, skip_count)
 
             N = I_s.shape[0] * I_s.shape[0]
-            loss = L1(N, I_t, I_tp, L_s, L_sp)
+            loss = L1(N, I_t, I_tp, L_s, L_sp).long()
             total_loss += loss
    
         print("total loss:", total_loss)
