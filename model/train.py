@@ -15,7 +15,10 @@ def train(model, optimizer, data):
     
     for i in range(num_batches):
         # num_losses = 0
-        total_loss = torch.tensor([0], dtype=torch.float32, requires_grad = True)
+        # total_loss = torch.tensor([0], dtype=torch.float32)
+
+        total_loss = []
+
         for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
             
 
@@ -29,10 +32,12 @@ def train(model, optimizer, data):
 
             N = I_s.shape[0] * I_s.shape[0]
             loss = L1(N, I_t, I_tp, L_s, L_sp)
-            total_loss += loss
+            # total_loss += loss
+            total_loss.append(loss)
    
         print("total loss:", total_loss)
 
+        total_loss = torch.sum(total_loss)
 
         epoch_loss += total_loss
 
