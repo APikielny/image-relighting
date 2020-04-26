@@ -36,7 +36,7 @@ def train(model, optimizer, data):
             total_loss += loss
             # total_loss.append(loss)
    
-        total_loss = total_loss // BATCH_SIZE
+        total_loss = total_loss / BATCH_SIZE
         print("total loss:", total_loss)
 
 
