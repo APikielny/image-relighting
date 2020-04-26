@@ -65,7 +65,7 @@ def get_image(path_to_image):
     inputL = inputL.astype(np.float32)/255.0 #normalise
     inputL = inputL.transpose((0,1))
     inputL = inputL[None,None,...] #not sure what's happening here
-    inputL = Variable(torch.from_numpy(inputL).cuda(), requires_grad=True)
+    inputL = Variable(torch.from_numpy(inputL), requires_grad=True).cuda()
     
     return inputL
     

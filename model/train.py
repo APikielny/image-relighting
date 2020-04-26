@@ -32,8 +32,6 @@ def train(model, optimizer, data):
 
             num_losses += 1
 
-            total_loss
-
         # if (total_loss == -1):
         #     total_loss = loss
         # else:
@@ -45,6 +43,7 @@ def train(model, optimizer, data):
 
         # total_loss = torch.mean(total_loss)
         # total_loss /= num_losses
+        total_loss = torch.mean(total_loss)
 
         epoch_loss += total_loss
 
