@@ -29,9 +29,9 @@ def train(model, optimizer, data):
             N = I_s.shape[0] * I_s.shape[0]
             loss = L1(N, I_t, I_tp, L_s, L_sp)
 	    if (total_loss == -1):
-	      total_loss = loss
+            total_loss = loss
 	    else:
-	      total_loss = torch.cat((total_loss, loss)
+            total_loss = torch.cat((total_loss, loss)
             # total_loss = torch.cat((total_loss, loss))
             # print("Individual loss", loss)
 
