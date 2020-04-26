@@ -41,11 +41,9 @@ MAX_DATA = int(ARGS.data)
 VERBOSE = bool(ARGS.verbose)
 
 
-def train(model, optimizer, data):
+def train(model, optimizer, dataloader):
 
-    num_batches = len(data) // BATCH_SIZE
-    # if (VERBOSE):
-    #     print("Num batches: ", num_batches)
+    num_batches = MAX_DATA // BATCH_SIZE
 
     epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
@@ -67,7 +65,7 @@ def train(model, optimizer, data):
 
         total_loss = total_loss / BATCH_SIZE
         if (VERBOSE):
-            print("Batch # {} / {} loss: {}".format(j, MAX_DATA // BATCH_SIZE, total_loss))
+            print("Batch # {} / {} loss: {}".format(j, num_batches, total_loss))
 
         epoch_loss += total_loss
 
