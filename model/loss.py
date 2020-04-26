@@ -3,23 +3,28 @@ import torch
 
 def L1(N, I_t, I_tp, L_s, L_sp):
 
+    print("in single loss!")
+
     img_norm = torch.mean(torch.abs(I_t - I_tp))
+    print("img norm:", img_norm)
+    print("img norm shape:", img_norm.shape)
 
-    #grad_norm = torch.norm(I_t.grad - I_tp.grad)
-
-    grad_norm = 0
-    if (I_t.grad != None):
-        print("I_t not none!")
-        grad_norm = torch.mean(torch.abs(I_t.grad - I_tp.grad))
+    # grad_norm = 0
+    # if (I_t.grad != None):
+    #     print("I_t not none!")
+    #     grad_norm = torch.mean(torch.abs(I_t.grad - I_tp.grad))
 
 
     # np_grad = filters.gaussian(I_t.cpu().detach().numpy()) - filters.gaussian(I_tp.cpu().detach().numpy())
     # grad_norm = torch.norm(torch.from_numpy(np_grad))
 
     
-    image_loss = img_norm + grad_norm
+    image_loss = img_norm #+ grad_norm
 
     light_loss = torch.sum((L_s - L_sp) ** 2)
+
+    print("light:", light_loss)
+    print("light shape:", light_loss.shape)
 
 
     loss = image_loss + light_loss
