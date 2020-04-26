@@ -104,7 +104,7 @@ model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 dataset = CelebData('../data/', int(ARGS.data))
-dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, pin_memory=True)
+dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 for i in range(EPOCHS):
     start = time.time()
     print("Training epoch #", i + 1, "/", EPOCHS)
