@@ -57,7 +57,7 @@ modelFolder = 'trained_models/'
 # load model
 from model import *
 my_network = HourglassNet()
-my_network.load_state_dict(torch.load(os.path.join(modelFolder, 'model1.pt')))
+my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model)))
 my_network.cuda()
 my_network.train(False)
 
