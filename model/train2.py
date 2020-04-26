@@ -1,10 +1,12 @@
 import torch
 from model import HourglassNet
 from loss import L1
+from data import load_data
 from random import shuffle
 import time
 import os
 import argparse
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -33,11 +35,10 @@ EPOCHS = int(ARGS.epochs)
 BATCH_SIZE = int(ARGS.batch)
 MAX_DATA = int(ARGS.data)
 
-def train(model, optimizer, data):
 
-    num_batches = len(data) // BATCH_SIZE
+def train(model, optimizer, data):
     epoch_loss = 0
-    
+
     for i in range(num_batches):
         total_loss = 0
         for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
@@ -59,7 +60,7 @@ def train(model, optimizer, data):
         optimizer.zero_grad()
         total_loss.backward()
         optimizer.step()
-    
+
     print("Epoch loss: ", epoch_loss)
 
 
@@ -67,22 +68,27 @@ model = HourglassNet(gray=True)
 model.cuda()
 model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-
-print("Loading data.")
-start = time.time()
-data = load_data('../data/', MAX_DATA)
-end = time.time()
-print("Loaded data. Size: ", len(data))
-print("Time elapsed:", end - start)
+dataset = CelebData('../data/')
+dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 for i in range(EPOCHS):
     start = time.time()
     print("Training epoch #", i + 1, "/", EPOCHS)
-    shuffle(data)
-    train(model, optimizer, data)
-    end = time.time()
-    print("Time elapsed to train epoch #", i + 1,":", end - start)
+    epoch_loss = 0
+    for j, data in enumerate(dataloader, 0):
+        I_s, I_t, L_s, L_t = data
+
+        skip_count = 4
+        I_tp, L_sp = model.forward(I_s, L_t, skip_count)
+        N = 128 * 128
+        loss = torch.mean(L1(N, I_t, I_tp, L_s, L_sp))
+        print(i, j, loss.data[0])
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+    print("Time elapsed to train epoch #", i + 1, ":", end - start)
 
 print("Done training! Saving model.")
 num_models = len(os.listdir('../trained_models/'))
-torch.save(model.state_dict(), '../trained_models/model_{:d}.pt'.format(num_models +  1))
+torch.save(model.state_dict(), '../trained_models/model_{:d}.pt'.format(num_models + 1))
