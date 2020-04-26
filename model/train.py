@@ -26,6 +26,8 @@ def parse_args():
         help='size of data to use'
     )
 
+    return parser.parse_args()
+
 
 ARGS = parse_args()
 EPOCHS = int(ARGS.epochs)
