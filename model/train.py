@@ -50,7 +50,7 @@ def train(model, optimizer, data):
     epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
     for j, data in enumerate(dataloader, 0):
-        total_loss = torch.tensor([0], dtype=torch.float32).cuda()
+        #total_loss = torch.tensor([0], dtype=torch.float32).cuda()
         I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
 
         # for k in range(BATCH_SIZE):
@@ -85,12 +85,12 @@ def train(model, optimizer, data):
 
         #total_loss = total_loss / BATCH_SIZE
         if (VERBOSE):
-            print("Batch loss:", total_loss)
+            print("Batch loss:", loss)
 
-        epoch_loss += total_loss
+        epoch_loss += loss
 
         optimizer.zero_grad()
-        total_loss.backward()
+        loss.backward()
         optimizer.step()
 
     epoch_loss = epoch_loss / num_batches
