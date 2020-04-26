@@ -1,5 +1,6 @@
 from skimage import filters
 import torch
+from kornia.filters import SpatialGradient
 
 def L1(N, I_t, I_tp, L_s, L_sp):
 
@@ -14,6 +15,11 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     print("img norm:", img_norm)
     print("img norm shape:", img_norm.shape)
 
+    I_t_grad = SpatialGradient()(I_t)
+    I_tp_grad = SpatialGradient()(I_tp)
+
+    img_grad = torch.mean(torch.abs(I_t_grad - I_tp_grad))
+
     # grad_norm = 0
     # if (I_t.grad != None):
     #     print("I_t not none!")
@@ -24,7 +30,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     # grad_norm = torch.norm(torch.from_numpy(np_grad))
 
     
-    image_loss = img_norm #+ grad_norm
+    image_loss = img_norm + img_grad
 
     light_loss = torch.mean((L_s - L_sp) ** 2)
 
