@@ -44,9 +44,7 @@ def train(model, optimizer, data):
         print("total loss:", total_loss)
 
         # total_loss = torch.mean(total_loss)
-        total_loss /= num_losses
-
-        print("total loss divided: ", total_loss)
+        # total_loss /= num_losses
 
         epoch_loss += total_loss
 
