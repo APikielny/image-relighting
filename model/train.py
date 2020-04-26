@@ -40,10 +40,8 @@ def train(model, optimizer, data):
             # total_loss.append(loss)
    
         total_loss = total_loss / BATCH_SIZE
-        print("total loss:", total_loss)
+        print("Batch loss:", total_loss)
 
-
-        # total_loss = torch.sum(total_loss)
 
         epoch_loss += total_loss
 
