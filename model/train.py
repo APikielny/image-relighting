@@ -1,8 +1,8 @@
 import torch
 from model import HourglassNet
 from loss import L1
-from data import load_data
-from random import shuffle
+from torch.utils.data import DataLoader
+from data import CelebData
 import time
 import os
 import argparse
@@ -23,7 +23,7 @@ def parse_args():
     )
     parser.add_argument(
         '--data',
-        default=30000,
+        default='30000',
         help='size of data to use'
     )
     parser.add_argument(
@@ -49,19 +49,14 @@ def train(model, optimizer, data):
 
     epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
-    
-    for i in range(num_batches):
-        # num_losses = 0
+    for j, data in enumerate(dataloader, 0):
         total_loss = torch.tensor([0], dtype=torch.float32).cuda()
-        
-        # total_loss = []
-
-        for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
-            
-            I_s = data[j].I_s
-            I_t = data[j].I_t
-            L_s = data[j].L_s
-            L_t = data[j].L_t
+        I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
+        for k in range(BATCH_SIZE):
+            I_s = I_sbatch[k]
+            I_t = I_tbatch[k]
+            L_s = L_sbatch[k]
+            L_t = L_tbatch[k]
 
             skip_count = 4
             I_tp, L_sp = model.forward(I_s, L_t, skip_count)
@@ -69,12 +64,10 @@ def train(model, optimizer, data):
             N = I_s.shape[0] * I_s.shape[0]
             loss = L1(N, I_t, I_tp, L_s, L_sp)
             total_loss += loss
-            # total_loss.append(loss)
-   
+
         total_loss = total_loss / BATCH_SIZE
         if (VERBOSE):
             print("Batch loss:", total_loss)
-
 
         epoch_loss += total_loss
 
@@ -91,18 +84,13 @@ model.cuda()
 model.train(True)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-print("Loading data.")
-start = time.time()
-data = load_data('../data/', MAX_DATA)
-end = time.time()
-print("Loaded data. Size: ", len(data))
-print("Time elapsed:", end - start)
-
+dataset = CelebData('../data/', int(ARGS.data))
+dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 for i in range(EPOCHS):
     start = time.time()
     print("Training epoch #", i + 1, "/", EPOCHS)
-    shuffle(data)
-    train(model, optimizer, data)
+
+    train(model, optimizer, dataloader)
     end = time.time()
     print("Time elapsed to train epoch #", i + 1, ":", end - start)
 
