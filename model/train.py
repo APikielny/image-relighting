@@ -1,6 +1,6 @@
 import torch
 from model import HourglassNet
-from loss import L1
+from loss import L1 #L1_batch, L1
 from torch.utils.data import DataLoader
 from data import CelebData
 import time
@@ -48,29 +48,50 @@ def train(model, optimizer, dataloader):
     epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
     for j, data in enumerate(dataloader, 0):
-        total_loss = torch.tensor([0], dtype=torch.float32).cuda()
+        #total_loss = torch.tensor([0], dtype=torch.float32).cuda()
         I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
-        for k in range(len(I_sbatch)):
-            I_s = I_sbatch[k]
-            I_t = I_tbatch[k]
-            L_s = L_sbatch[k]
-            L_t = L_tbatch[k]
 
-            skip_count = 4
-            I_tp, L_sp = model.forward(I_s, L_t, skip_count)
+        # for k in range(BATCH_SIZE):
+        #     I_s = I_sbatch[k]
+        #     I_t = I_tbatch[k]
+        #     L_s = L_sbatch[k]
+        #     L_t = L_tbatch[k]
 
-            N = I_s.shape[0] * I_s.shape[0]
-            loss = L1(N, I_t, I_tp, L_s, L_sp)
-            total_loss += loss
+        #     skip_count = 4
+        #     I_tp, L_sp = model.forward(I_s, L_t, skip_count)
 
-        total_loss = total_loss / BATCH_SIZE
+        #     N = I_s.shape[0] * I_s.shape[0]
+        #     loss = L1(N, I_t, I_tp, L_s, L_sp)
+        #     total_loss += loss
+
+
+        skip_count = 4
+        # print("I_s batch shape:", I_sbatch.shape)
+        # print("L_t batch shape:", L_tbatch.shape)
+
+        I_sbatch = torch.squeeze(I_sbatch, dim=1)
+        L_tbatch = torch.squeeze(L_tbatch, dim=1)
+
+        I_tbatch = torch.squeeze(I_tbatch, dim=1)
+        L_sbatch = torch.squeeze(L_sbatch, dim=1)
+
+        # print("I_s batch shape squeeze:", I_sbatch.shape)
+        # print("L_t batch shape squeeze:", L_tbatch.shape)
+
+        I_tp_batch, L_sp_batch = model.forward(I_sbatch, L_tbatch, skip_count)
+
+        N = I_sbatch.shape[2] * I_sbatch.shape[2]
+        loss = L1(N, I_tbatch, I_tp_batch, L_sbatch, L_sp_batch)
+        # total_loss += loss
+
+        #total_loss = total_loss / BATCH_SIZE
         if (VERBOSE):
             print("Batch # {} / {} loss: {}".format(j, num_batches, total_loss))
 
-        epoch_loss += total_loss
+        epoch_loss += loss
 
         optimizer.zero_grad()
-        total_loss.backward()
+        loss.backward()
         optimizer.step()
 
     epoch_loss = epoch_loss / num_batches
