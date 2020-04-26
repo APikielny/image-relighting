@@ -15,7 +15,10 @@ def train(model, optimizer, data):
     
     for i in range(num_batches):
         total_loss = 0
+        num_losses = 0
         for j in range(i * BATCH_SIZE, min(i * BATCH_SIZE + BATCH_SIZE, len(data))):
+            
+
             I_s = data[j].I_s
             I_t = data[j].I_t
             L_s = data[j].L_s
@@ -28,9 +31,13 @@ def train(model, optimizer, data):
             loss = L1(N, I_t, I_tp, L_s, L_sp)
             total_loss += loss
             print("Individual loss", loss)
+
+            num_losses += 1
             
         print("total loss:", total_loss)
-        print("total loss len:", total_loss)
+        total_loss /= num_losses
+
+        print("total loss divided: ", total_loss)
 
         epoch_loss += total_loss
 
