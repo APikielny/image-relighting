@@ -5,7 +5,7 @@ from data import load_data
 from random import shuffle
 import time
 
-EPOCHS = 1
+EPOCHS = 5
 BATCH_SIZE = 100
 
 def train(model, optimizer, data):
@@ -31,9 +31,6 @@ def train(model, optimizer, data):
             
         print("total loss:", total_loss)
         print("total loss len:", total_loss)
-        total_loss = torch.mean(total_loss)
-        print("Batch loss:", total_loss)
-        print("Batch loss len:", total_loss)
 
         epoch_loss += total_loss
 

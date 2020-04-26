@@ -26,10 +26,10 @@ class ImagePair:
 # shapes/formats found in testNetwork_demo_512.py
 def load_data(path):
     img_pairs = []
-    for i in range(1):
+    for i in range(6):
         folder_path = os.path.join(path, 'dpr_{:d}'.format(i*5000))
         img_folders = os.listdir(folder_path)
-        for img_folder in img_folders[:1000]:
+        for img_folder in img_folders[:500]:
             img_folder_path = os.path.join(folder_path, img_folder)
             pair = np.random.choice(5, 2)
             img_folder_name = img_folder_path[-10:]
@@ -65,7 +65,7 @@ def get_image(path_to_image):
     inputL = inputL.astype(np.float32)/255.0 #normalise
     inputL = inputL.transpose((0,1))
     inputL = inputL[None,None,...] #not sure what's happening here
-    inputL = Variable(torch.from_numpy(inputL).cuda())
+    inputL = Variable(torch.from_numpy(inputL).cuda(), requires_grad=True)
     
     return inputL
     
