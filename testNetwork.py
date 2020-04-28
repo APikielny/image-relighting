@@ -27,7 +27,7 @@ def parse_args():
     )
     parser.add_argument(
         '--model',
-        default='model_2.pt',
+        default='model_8.pt',
         help='model file to use stored in trained_model/'
     )
 
@@ -71,12 +71,6 @@ num_saves = len(os.listdir(saveFolder))
 saveFolder = os.path.join(saveFolder, 'trial_{}'.format(num_saves + 1))
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
-
-if len(sys.argv) == 2:
-    input_image = sys.argv[1]
-if len(sys.argv) == 3:
-    input_image = sys.argv[1]
-    model = sys.argv[2]
 
 img = cv2.imread('data/{}'.format(ARGS.image))
 row, col, _ = img.shape
@@ -130,6 +124,8 @@ for i in range(7):
     #  rendering images using the network
     sh = np.reshape(sh, (1,9,1,1)).astype(np.float32)
     sh = Variable(torch.from_numpy(sh).cuda())
+
+    print(sh)
     outputImg, outputSH  = my_network(inputL, sh, 0)
 
     np_outputSH = outputSH.cpu().data.numpy()
