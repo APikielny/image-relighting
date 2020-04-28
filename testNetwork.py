@@ -94,19 +94,21 @@ for i in range(7):
     sh = sh[0:9]
     sh = sh * 0.7
 
+
+    render_half_sphere(sh, False)
     #--------------------------------------------------
     # rendering half-sphere
-    sh = np.squeeze(sh)
-    shading = get_shading(normal, sh)
-    value = np.percentile(shading, 95)
-    ind = shading > value
-    shading[ind] = value
-    shading = (shading - np.min(shading))/(np.max(shading) - np.min(shading))
-    shading = (shading *255.0).astype(np.uint8)
-    shading = np.reshape(shading, (256, 256))
-    shading = shading * valid
-    cv2.imwrite(os.path.join(saveFolder,
-            'light_{:02d}.png'.format(i)), shading)
+    # sh = np.squeeze(sh)
+    # shading = get_shading(normal, sh)
+    # value = np.percentile(shading, 95)
+    # ind = shading > value
+    # shading[ind] = value
+    # shading = (shading - np.min(shading))/(np.max(shading) - np.min(shading))
+    # shading = (shading *255.0).astype(np.uint8)
+    # shading = np.reshape(shading, (256, 256))
+    # shading = shading * valid
+    # cv2.imwrite(os.path.join(saveFolder,
+    #         'light_{:02d}.png'.format(i)), shading)
     #--------------------------------------------------
 
     #----------------------------------------------
@@ -114,6 +116,9 @@ for i in range(7):
     sh = np.reshape(sh, (1,9,1,1)).astype(np.float32)
     sh = Variable(torch.from_numpy(sh).cuda())
     outputImg, outputSH  = my_network(inputL, sh, 0)
+
+    render_half_sphere(outputSH, True)
+
     outputImg = outputImg[0].cpu().data.numpy()
     outputImg = outputImg.transpose((1,2,0))
     outputImg = np.squeeze(outputImg)
@@ -125,3 +130,18 @@ for i in range(7):
     cv2.imwrite(os.path.join(saveFolder,
          '{}_{:02d}.jpg'.format(img_name,i)), resultLab)
     #----------------------------------------------
+
+def render_half_sphere(sh, output):
+    sh = np.squeeze(sh)
+    shading = get_shading(normal, sh)
+    value = np.percentile(shading, 95)
+    ind = shading > value
+    shading[ind] = value
+    shading = (shading - np.min(shading))/(np.max(shading) - np.min(shading))
+    shading = (shading *255.0).astype(np.uint8)
+    shading = np.reshape(shading, (256, 256))
+    shading = shading * valid
+    if output:
+        cv2.imwrite(os.path.join(saveFolder,'light_T_{:02d}.png'.format(i)), shading)
+    else: 
+        cv2.imwrite(os.path.join(saveFolder,'light_{:02d}.png'.format(i)), shading)
