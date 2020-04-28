@@ -40,9 +40,6 @@ BATCH_SIZE = int(ARGS.batch)
 MAX_DATA = int(ARGS.data)
 VERBOSE = bool(ARGS.verbose)
 
-# 5 epochs, 0 skip
-# add one for subsequent for next 4
-
 def train(model, optimizer, dataloader, epoch):
 
     num_batches = MAX_DATA // BATCH_SIZE
