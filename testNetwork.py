@@ -126,7 +126,6 @@ for i in range(7):
     sh = Variable(torch.from_numpy(sh).cuda())
 
     outputImg, outputSH  = my_network(inputL, sh, 0)
-    print(outputSH)
     np_outputSH = outputSH.cpu().data.numpy()
     render_half_sphere(np_outputSH, True)
 
