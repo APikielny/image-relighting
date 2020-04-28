@@ -187,12 +187,13 @@ class HourglassNet(nn.Module):
         feat = F.relu(self.pre_bn(feat))
         # get the inner most features
         feat, out_light = self.HG3(feat, target_light, 0, skip_count)
-        print(feat)
+
         feat = F.relu(self.bn_1(self.conv_1(feat)))
         feat = F.relu(self.bn_2(self.conv_2(feat)))
         feat = F.relu(self.bn_3(self.conv_3(feat)))
         out_img = self.output(feat)
         out_img = torch.sigmoid(out_img)
+        print(out_img)
         return out_img, out_light
 
 
