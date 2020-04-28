@@ -36,7 +36,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     I_t_grad = SpatialGradient()(I_t)
     I_tp_grad = SpatialGradient()(I_tp)
     
-    grad_norm = torch.norm((I_t_grad - I_tp_grad), p=1, dim=3) #computs l1 norm accross the columns
+    grad_norm = torch.norm((I_t_grad - I_tp_grad), p=1, dim=4) #computs l1 norm accross the columns
     grad_norm = torch.max(grad_norm)/num_images
 
     image_loss = img_norm + grad_norm 
@@ -49,7 +49,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     # print("light loss shape:", light_loss.shape)
 
 
-    loss = image_loss + 10*light_loss
+    loss = image_loss + light_loss
 
     
     return loss
