@@ -19,7 +19,9 @@ class CelebData(Dataset):
                         break
             if len(paths) == max_data:
                 break
-        self.paths = paths
+        # self.paths = paths
+
+        self.paths = loop_data_helper(paths, max_data - len(paths))
 
     def __len__(self):
         return len(self.paths)
@@ -63,3 +65,16 @@ def get_lighting(path_to_light):
     sh = np.reshape(sh, (1, 9, 1, 1)).astype(np.float32)
     sh = Variable(torch.from_numpy(sh))
     return sh
+
+def loop_data_helper(paths, add_dup):
+    data_size = len(paths)
+    orig_paths = paths
+
+    num_add = data_size / add_dup
+    for i in range(num_add):
+        paths.extend(orig_paths)
+
+    rem = data_size % add_dup
+    paths.extend(orig_paths[0:rem])
+
+    return paths
