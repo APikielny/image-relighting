@@ -19,9 +19,12 @@ class CelebData(Dataset):
                         break
             if len(paths) == max_data:
                 break
-        # self.paths = paths
-
-        self.paths = loop_data_helper(paths, max_data - len(paths))
+        
+        add = max_data - len(paths)
+        if add <= 0:
+            self.paths = paths
+        else:
+            self.paths = loop_data_helper(paths, add)
 
     def __len__(self):
         return len(self.paths)
@@ -70,7 +73,7 @@ def loop_data_helper(paths, add_dup):
     data_size = len(paths)
     orig_paths = paths
 
-    num_add = data_size / add_dup
+    num_add = data_size // add_dup
     for i in range(num_add):
         paths.extend(orig_paths)
 
