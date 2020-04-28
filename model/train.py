@@ -95,6 +95,7 @@ for i in range(EPOCHS):
     end = time.time()
     print("Time elapsed to train epoch #", i + 1, ":", end - start)
 
-print("Done training! Saving model.")
 num_models = len(os.listdir('../trained_models/'))
-torch.save(model.state_dict(), '../trained_models/model_{:d}.pt'.format(num_models + 1))
+model_name = 'model_{:d}.pt'.format(num_models + 1)
+print("Done training! Saving model as {}".format(model_name))
+torch.save(model.state_dict(), os.path.join('../trained_models/', model_name))
