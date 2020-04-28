@@ -49,7 +49,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     # print("light loss shape:", light_loss.shape)
 
 
-    loss = image_loss + light_loss
+    loss = image_loss + 10*light_loss
 
     
     return loss
