@@ -19,7 +19,7 @@ class CelebData(Dataset):
                         break
             if len(paths) == max_data:
                 break
-        
+
         add = max_data - len(paths)
         if add <= 0:
             self.paths = paths
@@ -71,13 +71,12 @@ def get_lighting(path_to_light):
 
 def loop_data_helper(paths, add_dup):
     data_size = len(paths)
-    orig_paths = paths
+    orig_paths = paths.copy()
 
-    num_add = data_size // add_dup
+    num_add = add_dup // data_size
     for i in range(num_add):
         paths.extend(orig_paths)
-
-    rem = data_size % add_dup
+    rem = add_dup % data_size
     paths.extend(orig_paths[0:rem])
 
     return paths
