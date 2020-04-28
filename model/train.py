@@ -50,34 +50,14 @@ def train(model, optimizer, dataloader, epoch):
     epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
     for j, data in enumerate(dataloader, 0):
-        #total_loss = torch.tensor([0], dtype=torch.float32).cuda()
         I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
-
-        # for k in range(BATCH_SIZE):
-        #     I_s = I_sbatch[k]
-        #     I_t = I_tbatch[k]
-        #     L_s = L_sbatch[k]
-        #     L_t = L_tbatch[k]
-
-        #     skip_count = 4
-        #     I_tp, L_sp = model.forward(I_s, L_t, skip_count)
-
-        #     N = I_s.shape[0] * I_s.shape[0]
-        #     loss = L1(N, I_t, I_tp, L_s, L_sp)
-        #     total_loss += loss
 
         if epoch < 5:
             skip_count = 0
-        elif epoch == 5:
-            skip_count = 1
-        elif epoch == 6:
-            skip_count = 2
-        elif epoch == 7:
-            skip_count = 3
+        elif epoch < 8:
+            skip_count = epoch - 4
         else:
             skip_count = 4
-        # print("I_s batch shape:", I_sbatch.shape)
-        # print("L_t batch shape:", L_tbatch.shape)
 
         I_sbatch = torch.squeeze(I_sbatch, dim=1).cuda()
         L_tbatch = torch.squeeze(L_tbatch, dim=1).cuda()
@@ -85,16 +65,11 @@ def train(model, optimizer, dataloader, epoch):
         I_tbatch = torch.squeeze(I_tbatch, dim=1).cuda()
         L_sbatch = torch.squeeze(L_sbatch, dim=1).cuda()
 
-        # print("I_s batch shape squeeze:", I_sbatch.shape)
-        # print("L_t batch shape squeeze:", L_tbatch.shape)
-
         I_tp_batch, L_sp_batch = model.forward(I_sbatch, L_tbatch, skip_count)
 
         N = I_sbatch.shape[2] * I_sbatch.shape[2]
         loss = L1(N, I_tbatch, I_tp_batch, L_sbatch, L_sp_batch)
-        # total_loss += loss
 
-        #total_loss = total_loss / BATCH_SIZE
         if (VERBOSE):
             print("Batch # {} / {} loss: {}".format(j + 1, num_batches, loss))
 
