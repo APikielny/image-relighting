@@ -193,7 +193,6 @@ class HourglassNet(nn.Module):
         feat = F.relu(self.bn_3(self.conv_3(feat)))
         out_img = self.output(feat)
         out_img = torch.sigmoid(out_img)
-        print(out_img)
         return out_img, out_light
 
 
