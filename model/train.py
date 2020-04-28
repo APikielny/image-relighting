@@ -48,7 +48,7 @@ def train(model, optimizer, dataloader, epoch):
 
     for j, data in enumerate(dataloader, 0):
         I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
-
+        print(L_sbatch[0])
         if epoch < 5:
             skip_count = 0
         elif epoch < 8:
