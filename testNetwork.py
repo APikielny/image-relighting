@@ -89,6 +89,21 @@ inputL = inputL.transpose((0,1))
 inputL = inputL[None,None,...] #not sure what's happening here
 inputL = Variable(torch.from_numpy(inputL).cuda())
 
+def render_half_sphere(sh, output):
+    sh = np.squeeze(sh)
+    shading = get_shading(normal, sh)
+    value = np.percentile(shading, 95)
+    ind = shading > value
+    shading[ind] = value
+    shading = (shading - np.min(shading))/(np.max(shading) - np.min(shading))
+    shading = (shading *255.0).astype(np.uint8)
+    shading = np.reshape(shading, (256, 256))
+    shading = shading * valid
+    if output:
+        cv2.imwrite(os.path.join(saveFolder,'light_T_{:02d}.png'.format(i)), shading)
+    else: 
+        cv2.imwrite(os.path.join(saveFolder,'light_{:02d}.png'.format(i)), shading)
+
 for i in range(7):
     sh = np.loadtxt(os.path.join(lightFolder, 'rotate_light_{:02d}.txt'.format(i)))
     sh = sh[0:9]
@@ -130,18 +145,3 @@ for i in range(7):
     cv2.imwrite(os.path.join(saveFolder,
          '{}_{:02d}.jpg'.format(img_name,i)), resultLab)
     #----------------------------------------------
-
-def render_half_sphere(sh, output):
-    sh = np.squeeze(sh)
-    shading = get_shading(normal, sh)
-    value = np.percentile(shading, 95)
-    ind = shading > value
-    shading[ind] = value
-    shading = (shading - np.min(shading))/(np.max(shading) - np.min(shading))
-    shading = (shading *255.0).astype(np.uint8)
-    shading = np.reshape(shading, (256, 256))
-    shading = shading * valid
-    if output:
-        cv2.imwrite(os.path.join(saveFolder,'light_T_{:02d}.png'.format(i)), shading)
-    else: 
-        cv2.imwrite(os.path.join(saveFolder,'light_{:02d}.png'.format(i)), shading)
