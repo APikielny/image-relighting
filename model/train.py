@@ -40,8 +40,10 @@ BATCH_SIZE = int(ARGS.batch)
 MAX_DATA = int(ARGS.data)
 VERBOSE = bool(ARGS.verbose)
 
+# 5 epochs, 0 skip
+# add one for subsequent for next 4
 
-def train(model, optimizer, dataloader):
+def train(model, optimizer, dataloader, epoch):
 
     num_batches = MAX_DATA // BATCH_SIZE
 
@@ -64,8 +66,16 @@ def train(model, optimizer, dataloader):
         #     loss = L1(N, I_t, I_tp, L_s, L_sp)
         #     total_loss += loss
 
-
-        skip_count = 4
+        if epoch < 5:
+            skip_count = 0
+        elif epoch == 5:
+            skip_count = 1
+        elif epoch == 6:
+            skip_count = 2
+        elif epoch == 7:
+            skip_count = 3
+        else:
+            skip_count = 4
         # print("I_s batch shape:", I_sbatch.shape)
         # print("L_t batch shape:", L_tbatch.shape)
 
@@ -109,7 +119,7 @@ for i in range(EPOCHS):
     start = time.time()
     print("Training epoch #", i + 1, "/", EPOCHS)
 
-    train(model, optimizer, dataloader)
+    train(model, optimizer, dataloader, i)
     end = time.time()
     print("Time elapsed to train epoch #", i + 1, ":", end - start)
 
