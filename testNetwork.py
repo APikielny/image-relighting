@@ -101,7 +101,7 @@ def render_half_sphere(sh, output):
 for i in range(7):
     sh = np.loadtxt(os.path.join(lightFolder, 'rotate_light_{:02d}.txt'.format(i)))
     sh = sh[0:9]
-    sh = sh * 0.7 * 10
+    sh = sh * 0.7
 
 
     render_half_sphere(sh, False)

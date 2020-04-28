@@ -39,7 +39,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     grad_norm = torch.norm((I_t_grad - I_tp_grad), p=1, dim=4) #computs l1 norm accross the columns
     grad_norm = torch.max(grad_norm)/num_images
 
-    image_loss = img_norm + grad_norm 
+    image_loss = 10 * img_norm + grad_norm
     light_loss = torch.mean((L_s - L_sp) ** 2)
 
     # print("Ls shape", L_s.shape)
