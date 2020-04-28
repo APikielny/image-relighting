@@ -13,7 +13,7 @@ def parse_args():
         description="Training the network")
     parser.add_argument(
         '--epochs',
-        default=5,
+        default=10,
         help='the number of EPOCHS to run',
     )
     parser.add_argument(
@@ -47,7 +47,6 @@ def train(model, optimizer, dataloader, epoch):
     epoch_loss = torch.tensor([0], dtype=torch.float32).cuda()
 
     for j, data in enumerate(dataloader, 0):
-        print("HERE")
         I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
         if epoch < 5:
             skip_count = 0
