@@ -96,7 +96,7 @@ def train(model, optimizer, dataloader, epoch):
 
         #total_loss = total_loss / BATCH_SIZE
         if (VERBOSE):
-            print("Batch # {} / {} loss: {}".format(j, num_batches, loss))
+            print("Batch # {} / {} loss: {}".format(j + 1, num_batches, loss))
 
         epoch_loss += loss
 
