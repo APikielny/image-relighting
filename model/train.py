@@ -95,13 +95,6 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 dataset = CelebData('../data/', int(ARGS.data))
 dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4, pin_memory=True)
 for i in range(EPOCHS):
-    start = time.time()
-    print("Training epoch #", i + 1, "/", EPOCHS)
-
-    train(model, optimizer, dataloader, i)
-    end = time.time()
-    print("Time elapsed to train epoch #", i + 1, ":", end - start)
-
     if (DEBUG):
         print("Outputing debug image.")
         if (i == 0):
@@ -109,6 +102,15 @@ for i in range(EPOCHS):
         else:
             debug(model, i, modelId)
         print("Finished outputting debug image. Continuing training")
+
+    start = time.time()
+    print("Training epoch #", i + 1, "/", EPOCHS)
+
+    train(model, optimizer, dataloader, i)
+    end = time.time()
+    print("Time elapsed to train epoch #", i + 1, ":", end - start)
+
+    
 
 
 num_models = len(os.listdir('../trained_models/'))
