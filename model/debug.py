@@ -2,7 +2,7 @@ import sys
 sys.path.append('model')
 sys.path.append('utils')
 
-from datatime import datatime
+from datetime import datetime
 
 import os
 import numpy as np

@@ -104,7 +104,7 @@ for i in range(EPOCHS):
 
     if (DEBUG):
         print("Outputing debug image.")
-        if (epoch == 0):
+        if (i == 0):
             modelId = debug(model, i + 1)
         else:
             debug(model, i + 1, modelId)
