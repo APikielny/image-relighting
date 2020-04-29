@@ -56,6 +56,7 @@ def L1(N, I_t, I_tp, L_s, L_sp):
 
 def L1_test(I_t, I_tp, L_s, L_sp):
 
+
     img_l1 = torch.sum(torch.abs(I_t - I_tp))
 
     I_t_grad = SpatialGradient()(I_t)

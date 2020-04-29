@@ -73,6 +73,7 @@ def train(model, optimizer, dataloader, epoch):
         #N = I_sbatch.shape[2] * I_sbatch.shape[2]
         loss = L1_test(I_tbatch, I_tp_batch, L_sbatch, L_sp_batch)
 
+
         if (VERBOSE):
             print("Batch # {} / {} loss: {}".format(j + 1, num_batches, loss))
 
