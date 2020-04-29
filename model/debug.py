@@ -40,8 +40,8 @@ def debug(model, epoch, modelId = None):
         print("datetime", datetime.now())
         modelId = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         modelId[10] = ","
-        modelId[2] = "\"
-        modelId[5] = "\"
+        modelId[2] = "&"
+        modelId[5] = "&"
 
         print("Fixed modelId:", modelId)
 
