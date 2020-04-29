@@ -1,6 +1,6 @@
 import torch
 from model import HourglassNet
-from loss import L1 #L1_batch, L1
+from loss import L1, L1_test
 from torch.utils.data import DataLoader
 from data import CelebData
 import time
