@@ -39,8 +39,13 @@ def debug(model, epoch, modelId = None):
     if (epoch == 0):
         print("datetime", datetime.now())
         modelId = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        modelId[10] = ","
+        modelId[2] = "\"
+        modelId[5] = "\"
 
-    saveFolder = 'result/debug/' + modelId
+        print("Fixed modelId:", modelId)
+
+    saveFolder = '../result/debug/' + modelId
     if not os.path.exists(saveFolder):
         os.makedirs(saveFolder)
     
