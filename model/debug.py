@@ -14,7 +14,7 @@ import argparse
 
 def debug(model, epoch, modelId = None):
     lightFolder = '../data/example_light/'
-    imgPath = '../data/obama.jpg'
+    imgPath = '../data/ben.jpg'
 
     ##### getting image
     img = cv2.imread(imgPath)
