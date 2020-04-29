@@ -12,7 +12,7 @@ import torch
 import cv2
 import argparse
 
-def debug(model, epoch):
+def debug(model, epoch, modelId = None):
     lightFolder = 'data/example_light/'
     imgPath = 'data/obama.jpg'
 
@@ -36,10 +36,14 @@ def debug(model, epoch):
     sh = Variable(torch.from_numpy(sh).cuda())
     #####
 
-    modelId = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    saveFolder = 'result/debug/' + modelId #todo, get new debug folder if epoch is 0
+    if (epoch == 0):
+        modelId = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+    saveFolder = 'result/debug/' + modelId
     if not os.path.exists(saveFolder):
         os.makedirs(saveFolder)
+    
+
 
     outputImg, outputSH = model.forward(inputL, sh, 0)
     outputImg = outputImg[0].cpu().data.numpy()
@@ -54,3 +58,5 @@ def debug(model, epoch):
 
     cv2.imwrite(os.path.join(saveFolder,
          '{}.jpg'.format(img_name)), resultLab)
+
+    return modelId

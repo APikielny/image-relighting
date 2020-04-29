@@ -89,6 +89,7 @@ def train(model, optimizer, dataloader, epoch):
 model = HourglassNet(gray=True)
 model.cuda()
 model.train(True)
+modelId = None
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 dataset = CelebData('../data/', int(ARGS.data))
@@ -103,7 +104,10 @@ for i in range(EPOCHS):
 
     if (DEBUG):
         print("Outputing debug image.")
-        debug(model, i + 1)
+        if (epoch == 0):
+            modelId = debug(model, i + 1)
+        else:
+            debug(model, i + 1, modelId)
         print("Finished outputting debug image. Continuing training")
 
 
