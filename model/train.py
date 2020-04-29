@@ -91,7 +91,7 @@ model = HourglassNet(gray=True)
 model.cuda()
 model.train(True)
 modelId = None
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.005, momentum=0.9)
 
 dataset = CelebData('../data/', int(ARGS.data))
 dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4, pin_memory=True)
