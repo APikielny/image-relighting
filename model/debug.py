@@ -37,7 +37,8 @@ def debug(model, epoch, modelId = None):
     #####
 
     if (epoch == 0):
-        modelId = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        print("datetime", datetime.now())
+        modelId = datetime.now() #.strftime("%d/%m/%Y %H:%M:%S")
 
     saveFolder = 'result/debug/' + modelId
     if not os.path.exists(saveFolder):
