@@ -54,39 +54,16 @@ def L1(N, I_t, I_tp, L_s, L_sp):
     
     return loss
 
-# #L1 loss for a whole batch
-# def L1_batch(N, I_t, I_tp, L_s, L_sp):
+def L1_test(I_t, I_tp, L_s, L_sp):
 
-#     print("loss function.")
+    img_l1 = torch.sum(torch.abs(I_t - I_tp))
 
-#     print("all losses:", torch.mean(torch.abs(I_t - I_tp)))
-#     print("all losses shape:", torch.mean(torch.abs(I_t - I_tp)).shape)
+    I_t_grad = SpatialGradient()(I_t)
+    I_tp_grad = SpatialGradient()(I_tp)
 
-#     print("mean loss: ", torch.mean(torch.mean(torch.abs(I_t - I_tp))))
+    grad_l1 = torch.sum(torch.abs(I_t_grad - I_tp_grad))
 
-#     img_norm = torch.mean(torch.mean(torch.abs(I_t - I_tp)))
+    light_l2 = torch.sum((L_s - L_sp) ** 2)
 
-#     #grad_norm = torch.norm(I_t.grad - I_tp.grad)
-
-#     # grad_norm = 0
-#     # if (I_t.grad != None):
-#     #     print("I_t not none!")
-#     #     grad_norm = torch.mean(torch.abs(I_t.grad - I_tp.grad))
-
-
-#     # np_grad = filters.gaussian(I_t.cpu().detach().numpy()) - filters.gaussian(I_tp.cpu().detach().numpy())
-#     # grad_norm = torch.norm(torch.from_numpy(np_grad))
-
-    
-#     image_loss = img_norm #+ grad_norm
-
-#     print("all light loss:", (L_s - L_sp) ** 2)
-#     light_loss = torch.sum((L_s - L_sp) ** 2)
-
-#     print("light loss:", (L_s - L_sp) ** 2)
-
-
-#     loss = image_loss + light_loss
-
-    
-#     return loss
+    loss = 1/(100*128*128) * (img_l1 + grad_l1) + light_l2
+    return loss

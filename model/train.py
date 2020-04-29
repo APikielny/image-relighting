@@ -70,8 +70,8 @@ def train(model, optimizer, dataloader, epoch):
 
         I_tp_batch, L_sp_batch = model.forward(I_sbatch, L_tbatch, skip_count)
 
-        N = I_sbatch.shape[2] * I_sbatch.shape[2]
-        loss = L1(N, I_tbatch, I_tp_batch, L_sbatch, L_sp_batch)
+        #N = I_sbatch.shape[2] * I_sbatch.shape[2]
+        loss = L1_test(I_tbatch, I_tp_batch, L_sbatch, L_sp_batch)
 
         if (VERBOSE):
             print("Batch # {} / {} loss: {}".format(j + 1, num_batches, loss))
