@@ -39,9 +39,17 @@ def debug(model, epoch, modelId = None):
     if (epoch == 0):
         print("datetime", datetime.now())
         modelId = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        modelId[10] = ","
-        modelId[2] = "&"
-        modelId[5] = "&"
+
+        newModelId = ""
+        for i in range(len(modelId)):
+            if i == 10:
+                newModelId += ","
+            elif i == 2 or i == 5:
+                newModelId += "&"
+            else:
+                newModelId += modelId[i]
+        modelId = newModelId
+        
 
         print("Fixed modelId:", modelId)
 
