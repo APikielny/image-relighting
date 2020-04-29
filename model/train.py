@@ -7,7 +7,7 @@ import time
 import os
 import argparse
 import cv2
-from debug.py import debug
+from debug import debug
 
 
 def parse_args():
