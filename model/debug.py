@@ -55,7 +55,7 @@ def debug(model, epoch, modelId = None):
     resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
     resultLab = cv2.resize(resultLab, (col, row))
     #img_name, e = os.path.splitext(ARGS.image)
-    img_name = "Epoch" + epoch
+    img_name = "Epoch " + str(epoch)
 
     cv2.imwrite(os.path.join(saveFolder,
          '{}.jpg'.format(img_name)), resultLab)
