@@ -66,6 +66,7 @@ def L1_test(I_t, I_tp, L_s, L_sp):
 
     light_l2 = torch.sum((L_s - L_sp) ** 2)
     print(light_l2.shape)
+    print(light_l2)
 
     #loss = 1/(100*128*128) * (img_l1 + grad_l1) + light_l2
     loss = 1/(100*128*128) * (img_l1 + grad_l1) + light_l2
