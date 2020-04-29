@@ -31,16 +31,18 @@ def debug(model, epoch, modelId = None):
     if (epoch == 0):
         print("datetime", datetime.now())
         modelId = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
-        newModelId = ""
-        for i in range(len(modelId)):
-            if i == 10:
-                newModelId += ","
-            elif i == 2 or i == 5:
-                newModelId += "&"
-            else:
-                newModelId += modelId[i]
+        newModelId = modelId[0:2] + "&" + modelId[3:5] + "&" + modelId[6:10] + "," + modelId[11:]
         modelId = newModelId
+
+        # newModelId = ""
+        # for i in range(len(modelId)):
+        #     if i == 10:
+        #         newModelId += ","
+        #     elif i == 2 or i == 5:
+        #         newModelId += "&"
+        #     else:
+        #         newModelId += modelId[i]
+        # modelId = newModelId
         
 
         print("Fixed modelId:", modelId)
