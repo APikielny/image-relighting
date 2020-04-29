@@ -105,9 +105,9 @@ for i in range(EPOCHS):
     if (DEBUG):
         print("Outputing debug image.")
         if (i == 0):
-            modelId = debug(model, i + 1)
+            modelId = debug(model, i)
         else:
-            debug(model, i + 1, modelId)
+            debug(model, i, modelId)
         print("Finished outputting debug image. Continuing training")
 
 
