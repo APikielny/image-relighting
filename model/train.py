@@ -6,6 +6,8 @@ from data import CelebData
 import time
 import os
 import argparse
+import cv2
+from debug.py import debug
 
 
 def parse_args():
@@ -30,6 +32,10 @@ def parse_args():
         '--verbose',
         action='store_true',
         help='print additional information if true')
+    parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='debug model by outputting intermediate images')
 
     return parser.parse_args()
 
@@ -39,6 +45,7 @@ EPOCHS = int(ARGS.epochs)
 BATCH_SIZE = int(ARGS.batch)
 MAX_DATA = int(ARGS.data)
 VERBOSE = bool(ARGS.verbose)
+DEBUG = bool(ARGS.debug)
 
 def train(model, optimizer, dataloader, epoch):
 
@@ -93,6 +100,12 @@ for i in range(EPOCHS):
     train(model, optimizer, dataloader, i)
     end = time.time()
     print("Time elapsed to train epoch #", i + 1, ":", end - start)
+
+    if (DEBUG):
+        print("Outputing debug image.")
+        debug(model, i + 1)
+        print("Finished outputting debug image. Continuing training")
+
 
 num_models = len(os.listdir('../trained_models/'))
 model_name = 'model_{:d}.pt'.format(num_models + 1)
