@@ -27,14 +27,6 @@ def debug(model, epoch, modelId = None):
     inputL = inputL.transpose((0,1))
     inputL = inputL[None,None,...] #not sure what's happening here
     inputL = Variable(torch.from_numpy(inputL).cuda())
-    ##### getting sh
-
-    sh = np.loadtxt(os.path.join(lightFolder, 'rotate_light_02.txt'))
-    sh = sh[0:9]
-    sh = sh * 0.7
-    sh = np.reshape(sh, (1,9,1,1)).astype(np.float32)
-    sh = Variable(torch.from_numpy(sh).cuda())
-    #####
 
     if (epoch == 0):
         print("datetime", datetime.now())
@@ -56,21 +48,30 @@ def debug(model, epoch, modelId = None):
     saveFolder = '../result/debug/' + modelId
     if not os.path.exists(saveFolder):
         os.makedirs(saveFolder)
+
     
+    for i in range(7):
+        ##### getting sh
 
+        sh = np.loadtxt(os.path.join(lightFolder, 'rotate_light_{:02d}.txt'.format(i)))
+        sh = sh[0:9]
+        sh = sh * 0.7
+        sh = np.reshape(sh, (1,9,1,1)).astype(np.float32)
+        sh = Variable(torch.from_numpy(sh).cuda())
+        #####
 
-    outputImg, outputSH = model.forward(inputL, sh, 0)
-    outputImg = outputImg[0].cpu().data.numpy()
-    outputImg = outputImg.transpose((1,2,0))
-    outputImg = np.squeeze(outputImg)
-    outputImg = (outputImg*255.0).astype(np.uint8)
-    Lab[:,:,0] = outputImg
-    resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
-    resultLab = cv2.resize(resultLab, (col, row))
-    #img_name, e = os.path.splitext(ARGS.image)
-    img_name = "Epoch" + str(epoch)
+        outputImg, outputSH = model.forward(inputL, sh, 0)
+        outputImg = outputImg[0].cpu().data.numpy()
+        outputImg = outputImg.transpose((1,2,0))
+        outputImg = np.squeeze(outputImg)
+        outputImg = (outputImg*255.0).astype(np.uint8)
+        Lab[:,:,0] = outputImg
+        resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
+        resultLab = cv2.resize(resultLab, (col, row))
+        #img_name, e = os.path.splitext(ARGS.image)
+        img_name = "Epoch" + str(epoch) + "Light" + '{:02}'.format(i)
 
-    cv2.imwrite(os.path.join(saveFolder,
-         '{}.jpg'.format(img_name)), resultLab)
+        cv2.imwrite(os.path.join(saveFolder,
+            '{}.jpg'.format(img_name)), resultLab)
 
     return modelId
