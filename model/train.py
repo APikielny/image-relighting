@@ -114,7 +114,7 @@ for i in range(EPOCHS):
 
 
 now = datetime.now()
-model_name = 'model{}.pt'.format(now.strftime("%m-%d-%H%M"))
+model_name = 'model_{}.pt'.format(now.strftime("%m-%d-%H%M"))
 
 print("Done training! Saving model as {}".format(model_name))
 torch.save(model.state_dict(), os.path.join('../trained_models/', model_name))
