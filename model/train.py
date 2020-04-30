@@ -4,6 +4,7 @@ import time
 import os
 import argparse
 from torch.utils.data import DataLoader
+from datetime import datetime
 
 # Local Files
 from model import HourglassNet
@@ -111,10 +112,8 @@ for i in range(EPOCHS):
     end = time.time()
     print("Time elapsed to train epoch #", i + 1, ":", end - start)
 
-    
+now = datetime.now()
+model_name = 'model_{}.pt'.format(now.strftime("%d%m-%H%M"))
 
-
-num_models = len(os.listdir('../trained_models/'))
-model_name = 'model_{:d}.pt'.format(num_models + 1)
 print("Done training! Saving model as {}".format(model_name))
 torch.save(model.state_dict(), os.path.join('../trained_models/', model_name))
