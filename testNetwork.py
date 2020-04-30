@@ -27,7 +27,7 @@ def parse_args():
     )
     parser.add_argument(
         '--model',
-        default='model_8.pt',
+        default='default.pt',
         help='model file to use stored in trained_model/'
     )
 
@@ -103,31 +103,13 @@ for i in range(7):
     sh = sh[0:9]
     sh = sh * 0.7
 
-
     render_half_sphere(sh, False)
-    #--------------------------------------------------
-    # rendering half-sphere
-    # sh = np.squeeze(sh)
-    # shading = get_shading(normal, sh)
-    # value = np.percentile(shading, 95)
-    # ind = shading > value
-    # shading[ind] = value
-    # shading = (shading - np.min(shading))/(np.max(shading) - np.min(shading))
-    # shading = (shading *255.0).astype(np.uint8)
-    # shading = np.reshape(shading, (256, 256))
-    # shading = shading * valid
-    # cv2.imwrite(os.path.join(saveFolder,
-    #         'light_{:02d}.png'.format(i)), shading)
-    #--------------------------------------------------
 
-    #----------------------------------------------
     #  rendering images using the network
     sh = np.reshape(sh, (1,9,1,1)).astype(np.float32)
     sh = Variable(torch.from_numpy(sh).cuda())
 
     outputImg, outputSH  = my_network(inputL, sh, 0)
-    #np_outputSH = outputSH.cpu().data.numpy()
-    #render_half_sphere(np_outputSH, True)
 
     outputImg = outputImg[0].cpu().data.numpy()
     outputImg = outputImg.transpose((1,2,0))
