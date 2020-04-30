@@ -20,13 +20,19 @@ def parse_args():
         '--epochs',
         default=10,
         type=int,
-        help='the number of EPOCHS to run',
+        help='the number of epochs to run',
     )
     parser.add_argument(
         '--batch',
         default=100,
         type=int,
         help='the batch size'
+    )
+    parser.add_argument(
+        '--lr',
+        type=float,
+        default=0.0001,
+        help='learning rate for the model'
     )
     parser.add_argument(
         '--data',
@@ -50,13 +56,16 @@ def parse_args():
 
     return parser.parse_args()
 
-
 ARGS = parse_args()
-EPOCHS = int(ARGS.epochs)
-BATCH_SIZE = int(ARGS.batch)
-MAX_DATA = int(ARGS.data)
+# Settings
 VERBOSE = bool(ARGS.verbose)
 DEBUG = bool(ARGS.debug)
+
+# Hyper parameters
+EPOCHS = ARGS.epochs
+BATCH_SIZE = ARGS.batch
+LEARNING_RATE = ARGS.lr
+MAX_DATA = ARGS.data
 
 def train(model, optimizer, dataloader, epoch):
 
@@ -100,7 +109,7 @@ model = HourglassNet(gray=True)
 model.cuda()
 model.train(True)
 modelId = None
-optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
+optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 dataset = CelebData('../data/', int(ARGS.data))
 dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4, pin_memory=True)
