@@ -12,9 +12,9 @@ import torch
 import cv2
 import argparse
 
-def debug(model, epoch, modelId = None):
+def test(model, modelId = None):
     lightFolder = '../data/example_light/'
-    imgPath = '../data/ben.jpg'
+    imgPath = '../data/obama.jpg'
 
     ##### getting image
     img = cv2.imread(imgPath)
@@ -28,26 +28,7 @@ def debug(model, epoch, modelId = None):
     inputL = inputL[None,None,...] #not sure what's happening here
     inputL = Variable(torch.from_numpy(inputL).cuda())
 
-    if (epoch == 0):
-        print("datetime", datetime.now())
-        modelId = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        newModelId = modelId[0:2] + "&" + modelId[3:5] + "&" + modelId[6:10] + "," + modelId[11:]
-        modelId = newModelId
-
-        # newModelId = ""
-        # for i in range(len(modelId)):
-        #     if i == 10:
-        #         newModelId += ","
-        #     elif i == 2 or i == 5:
-        #         newModelId += "&"
-        #     else:
-        #         newModelId += modelId[i]
-        # modelId = newModelId
-        
-
-        print("Fixed modelId:", modelId)
-
-    saveFolder = '../result/debug/' + modelId
+    saveFolder = '../result/test/' + modelId
     if not os.path.exists(saveFolder):
         os.makedirs(saveFolder)
 
@@ -71,9 +52,37 @@ def debug(model, epoch, modelId = None):
         resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
         resultLab = cv2.resize(resultLab, (col, row))
         #img_name, e = os.path.splitext(ARGS.image)
-        img_name = "Epoch" + str(epoch) + "Light" + '{:02}'.format(i)
+        img_name =  "Light" + '{:02}'.format(i)
 
         cv2.imwrite(os.path.join(saveFolder,
             '{}.jpg'.format(img_name)), resultLab)
 
     return modelId
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="image relighting training.")
+    parser.add_argument(
+        '--image',
+        default='obama.jpg',
+        help='name of image stored in data/',
+    )
+    parser.add_argument(
+        '--model',
+        default='model_9.pt',
+        help='model file to use stored in trained_model/'
+    )
+
+    return parser.parse_args()
+
+
+ARGS = parse_args()
+modelFolder = '../trained_models/'
+
+from model import *
+my_network = HourglassNet()
+my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model)))
+my_network.cuda()
+my_network.train(False)
+
+test(my_network)
