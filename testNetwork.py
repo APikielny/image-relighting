@@ -107,6 +107,7 @@ for i in range(7):
 
     outputImg, outputSH  = my_network(inputL, sh, 0)
 
+    outputSH = outputSH.cpu()
     render_half_sphere(outputSH, True)
 
     outputImg = outputImg[0].cpu().data.numpy()
