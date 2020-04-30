@@ -35,6 +35,11 @@ def parse_args():
         help='size of data to use'
     )
     parser.add_argument(
+        '--model',
+        default=None,
+        help='name of the model to be saved'
+    )
+    parser.add_argument(
         '--verbose',
         action='store_true',
         help='print additional information if true')
@@ -115,9 +120,11 @@ for i in range(EPOCHS):
     end = time.time()
     print("Time elapsed to train epoch #", i + 1, ":", end - start)
 
-
-now = datetime.now()
-model_name = 'model_{}.pt'.format(now.strftime("%m-%d-%H%M"))
+if ARGS.model is None:
+    now = datetime.now()
+    model_name = 'model_{}.pt'.format(now.strftime("%m-%d-%H%M"))
+else:
+    model_name = ARGS.model
 
 print("Done training! Saving model as {}".format(model_name))
 torch.save(model.state_dict(), os.path.join('../trained_models/', model_name))
