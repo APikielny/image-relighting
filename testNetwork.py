@@ -64,7 +64,7 @@ my_network.train(False)
 lightFolder = 'data/example_light/'
 
 saveFolder = 'result'
-saveFolder = os.path.join(saveFolder, ARGS.model)
+saveFolder = os.path.join(saveFolder, ARGS.model.split(".")[0])
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
@@ -90,7 +90,7 @@ def render_half_sphere(sh, output):
     shading = np.reshape(shading, (256, 256))
     shading = shading * valid
     if output:
-        cv2.imwrite(os.path.join(saveFolder,'light_T_{:02d}.png'.format(i)), shading)
+        cv2.imwrite(os.path.join(saveFolder,'light_predicted.png'.format(i)), shading)
     else: 
         cv2.imwrite(os.path.join(saveFolder,'light_{:02d}.png'.format(i)), shading)
 
@@ -106,6 +106,8 @@ for i in range(7):
     sh = Variable(torch.from_numpy(sh).cuda())
 
     outputImg, outputSH  = my_network(inputL, sh, 0)
+
+    render_half_sphere(outputSH, True)
 
     outputImg = outputImg[0].cpu().data.numpy()
     outputImg = outputImg.transpose((1,2,0))
