@@ -125,7 +125,7 @@ for i in range(7):
     sh = np.reshape(sh, (1,9,1,1)).astype(np.float32)
     sh = Variable(torch.from_numpy(sh).cuda())
 
-    outputImg, outputSH  = my_network.forward(inputL, sh, 0)
+    outputImg, outputSH  = my_network(inputL, sh, 0)
     #np_outputSH = outputSH.cpu().data.numpy()
     #render_half_sphere(np_outputSH, True)
 
