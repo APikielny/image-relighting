@@ -19,16 +19,19 @@ def parse_args():
     parser.add_argument(
         '--epochs',
         default=10,
+        type=int,
         help='the number of EPOCHS to run',
     )
     parser.add_argument(
         '--batch',
-        default='100',
+        default=100,
+        type=int,
         help='the batch size'
     )
     parser.add_argument(
         '--data',
-        default='30000',
+        default=30000,
+        type=int,
         help='size of data to use'
     )
     parser.add_argument(
