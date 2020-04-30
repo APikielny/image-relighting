@@ -64,11 +64,7 @@ my_network.train(False)
 lightFolder = 'data/example_light/'
 
 saveFolder = 'result'
-if not os.path.exists(saveFolder):
-    os.makedirs(saveFolder)
-
-num_saves = len(os.listdir(saveFolder))
-saveFolder = os.path.join(saveFolder, 'trial_{}'.format(num_saves + 1))
+saveFolder = os.path.join(saveFolder, ARGS.model)
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
