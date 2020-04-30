@@ -112,6 +112,7 @@ for i in range(EPOCHS):
     end = time.time()
     print("Time elapsed to train epoch #", i + 1, ":", end - start)
 
+
 now = datetime.now()
 model_name = 'model{}.pt'.format(now.strftime("%m-%d-%H%M"))
 
