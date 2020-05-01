@@ -49,7 +49,7 @@ def preprocess_image(img_path):
     inputL = inputL.transpose((0,1))
     inputL = inputL[None,None,...] #not sure what's happening here
     inputL = Variable(torch.from_numpy(inputL).cuda())
-    return inputL, row, col
+    return inputL, row, col, Lab
 
 
 ARGS = parse_args()
@@ -70,13 +70,13 @@ saveFolder = os.path.join(saveFolder, ARGS.model.split(".")[0])
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
-light_img, _, _ = preprocess_image('data/{}'.format(ARGS.light_image))
+light_img, _, _, _ = preprocess_image('data/{}'.format(ARGS.light_image))
 
 sh = torch.zeros((1,9,1,1)).cuda()
 
 _, outputSH  = my_network(light_img, sh, 0)
 
-src_img, row, col = preprocess_image('data/{}'.format(ARGS.source_image))
+src_img, row, col, Lab = preprocess_image('data/{}'.format(ARGS.source_image))
 
 outputImg, _ = my_network(src_img, outputSH, 0)
 
