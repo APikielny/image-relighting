@@ -134,8 +134,8 @@ class lightingNet(nn.Module):
         upFeat = self.post_relu2(self.post_FC2(upFeat))
         upFeat = upFeat.repeat((1, 1, row, col))
         innerFeat[:, 0:self.ncInput, :, :] = upFeat
-        #return innerFeat, light (old return statement pre Zf)
-        return innerFeat, innerFeat[:, self.ncInput:, :, :], light
+        return innerFeat, light #(old return statement pre Zf)
+        #return innerFeat, innerFeat[:, self.ncInput:, :, :], light
 
 
 class HourglassNet(nn.Module):
@@ -187,8 +187,8 @@ class HourglassNet(nn.Module):
         feat = self.pre_conv(x)
         feat = F.relu(self.pre_bn(feat))
         # get the inner most features
-        #feat, out_light = self.HG3(feat, target_light, 0, skip_count)
-        feat, out_features, out_light = self.HG3(feat, target_light, 0, skip_count)
+        feat, out_light = self.HG3(feat, target_light, 0, skip_count)
+        #feat, out_features, out_light = self.HG3(feat, target_light, 0, skip_count)
 
         feat = F.relu(self.bn_1(self.conv_1(feat)))
         feat = F.relu(self.bn_2(self.conv_2(feat)))
