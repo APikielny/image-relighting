@@ -1,0 +1,5 @@
+kornia>=0.3.0
+numpy>=1.18.1
+opencv-python>=3.4.8.29
+torch>=1.5.0
+torchvision>=0.6.0
