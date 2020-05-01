@@ -61,14 +61,14 @@ my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model)))
 my_network.cuda()
 my_network.train(False)
 
-lightFolder = 'data/example_light/'
+lightFolder = 'data/test/example_light/'
 
 saveFolder = 'result'
 saveFolder = os.path.join(saveFolder, ARGS.model.split(".")[0])
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
-img = cv2.imread('data/{}'.format(ARGS.image))
+img = cv2.imread('data/test/{}'.format(ARGS.image))
 row, col, _ = img.shape
 img = cv2.resize(img, (128, 128))
 Lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB) #converts image to one color space LAB

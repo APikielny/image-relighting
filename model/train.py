@@ -111,7 +111,7 @@ model.train(True)
 modelId = None
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-dataset = CelebData('../data/', int(ARGS.data))
+dataset = CelebData('../data/train/data256', int(ARGS.data))
 dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4, pin_memory=True)
 for i in range(EPOCHS):
     if (DEBUG):
