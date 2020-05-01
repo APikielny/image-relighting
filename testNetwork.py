@@ -104,6 +104,8 @@ for i in range(7):
     #  rendering images using the network
     sh = np.reshape(sh, (1,9,1,1)).astype(np.float32)
     sh = Variable(torch.from_numpy(sh).cuda())
+    #sh = Variable(torch.from_numpy(sh))
+
 
     outputImg, outputSH  = my_network(inputL, sh, 0)
 
