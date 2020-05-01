@@ -12,12 +12,12 @@ class CelebData(Dataset):
         for img_folder in img_folders:
             img_path = os.path.join(root_dir, img_folder)
             if os.path.isdir(img_path):
-                paths.append(path)
+                paths.append(img_path)
                 if len(paths) == max_data:
                     break
             if len(paths) == max_data:
                 break
-        add = max_add - len(paths)
+        add = max_data - len(paths)
         if add <= 0:
             self.paths = paths
         else:
