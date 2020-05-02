@@ -8,23 +8,28 @@ from cv2 import destroyAllWindows
 from cv2 import CascadeClassifier
 from cv2 import rectangle
 
-BUFFER = 50
-
-def cropFace(img_path):
+def cropFace(img):
 
     # load the photograph
-    img = imread('../data/boys.jpg')
-    pixels = resize(img, (int(img.shape[1] * 0.3), int(img.shape[0] * 0.3)))
+    # pixels = img
+    pixels = img
+
     # load the pre-trained model
-    classifier = CascadeClassifier('haarcascade_frontalface_default.xml')
+    classifier = CascadeClassifier('face_detect/haarcascade_frontalface_default.xml')
+
     # perform face detection
     bboxes = classifier.detectMultiScale(pixels)
-    # print bounding box for each detected face
 
     # extract
     x, y, width, height = bboxes[0]
     x2, y2 = x + width, y + height
-    # draw a rectangle over the pixels
+    
+    BUFFER = int(width * 0.25)
 
     # show the image
-    return pixels[y - BUFFER:y2 + BUFFER, x - BUFFER:x2 + BUFFER]
+    image = pixels[max(y - BUFFER, 0):min(y2 + BUFFER, pixels.shape[0]), max(x - BUFFER, 0):min(x2 + BUFFER, pixels.shape[1])]
+    # imshow('hehe', image)
+    # waitKey(0)
+    return image
+
+#cropFace(1)

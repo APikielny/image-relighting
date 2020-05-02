@@ -7,6 +7,8 @@ sys.path.append('utils')
 
 from utils_SH import *
 
+from face_detect.faceDetect import cropFace
+
 # other modules
 import os
 import numpy as np
@@ -40,13 +42,21 @@ def parse_args():
         action='store_true',
         help='cpu vs. gpu'
     )
+    parser.add_argument(
+        '--face_detect',
+        action='store_true',
+        help='face detection/cropping for more accurate relighting'
+    )
+    
 
     return parser.parse_args()
 
 def preprocess_image(img_path):
     src_img = cv2.imread(img_path)
+    if (ARGS.face_detect):
+        src_img = cropFace(src_img)
     row, col, _ = src_img.shape
-    src_img = cv2.resize(src_img, (128, 128))
+    src_img = cv2.resize(src_img, (256, 256))
     Lab = cv2.cvtColor(src_img, cv2.COLOR_BGR2LAB) #converts image to one color space LAB
 
     inputL = Lab[:,:,0] #taking only the L channel
@@ -102,6 +112,8 @@ Lab[:,:,0] = outputImg
 resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
 resultLab = cv2.resize(resultLab, (col, row))
 img_name, e = os.path.splitext(ARGS.source_image)
+if (ARGS.face_detect):
+    img_name += "_faceDetect"
 cv2.imwrite(os.path.join(saveFolder,
         '{}_relit.jpg'.format(img_name)), resultLab)
 #----------------------------------------------
