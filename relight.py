@@ -44,16 +44,16 @@ def parse_args():
     )
     parser.add_argument(
         '--face_detect',
-        action='store_true',
-        help='face detection/cropping for more accurate relighting'
+        default='Neither',
+        help='Options: "both" or "light". Face detection/cropping for more accurate relighting.'
     )
     
 
     return parser.parse_args()
 
-def preprocess_image(img_path):
+def preprocess_image(img_path, srcOrLight):
     src_img = cv2.imread(img_path)
-    if (ARGS.face_detect):
+    if (ARGS.face_detect == 'both') or (ARGS.face_detect == 'light' and srcOrLight == 2):
         src_img = cropFace(src_img)
     row, col, _ = src_img.shape
     src_img = cv2.resize(src_img, (256, 256))
@@ -85,14 +85,12 @@ else:
 
 my_network.train(False)
 
-lightFolder = 'data/example_light/'
-
 saveFolder = 'result'
 saveFolder = os.path.join(saveFolder, ARGS.model.split(".")[0])
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
-light_img, _, _, _ = preprocess_image('data/{}'.format(ARGS.light_image))
+light_img, _, _, _ = preprocess_image('data/{}'.format(ARGS.light_image), 2)
 
 sh = torch.zeros((1,9,1,1))
 if (ARGS.gpu):
@@ -100,7 +98,7 @@ if (ARGS.gpu):
 
 _, outputSH  = my_network(light_img, sh, 0)
 
-src_img, row, col, Lab = preprocess_image('data/{}'.format(ARGS.source_image))
+src_img, row, col, Lab = preprocess_image('data/{}'.format(ARGS.source_image), 1)
 
 outputImg, _ = my_network(src_img, outputSH, 0)
 
@@ -112,8 +110,10 @@ Lab[:,:,0] = outputImg
 resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
 resultLab = cv2.resize(resultLab, (col, row))
 img_name, e = os.path.splitext(ARGS.source_image)
-if (ARGS.face_detect):
-    img_name += "_faceDetect"
+if (ARGS.face_detect == 'both'):
+    img_name += "_faceDetectBoth"
+if (ARGS.face_detect == 'light'):
+    img_name += "_faceDetectLight"
 cv2.imwrite(os.path.join(saveFolder,
         '{}_relit.jpg'.format(img_name)), resultLab)
 #----------------------------------------------
