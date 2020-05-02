@@ -35,6 +35,11 @@ def parse_args():
         default='default.pt',
         help='model file to use stored in trained_model/'
     )
+    parser.add_argument(
+        '--gpu',
+        action='store_true',
+        help='cpu vs. gpu'
+    )
 
     return parser.parse_args()
 
@@ -48,7 +53,9 @@ def preprocess_image(img_path):
     inputL = inputL.astype(np.float32)/255.0 #normalise
     inputL = inputL.transpose((0,1))
     inputL = inputL[None,None,...] #not sure what's happening here
-    inputL = Variable(torch.from_numpy(inputL).cuda())
+    inputL = Variable(torch.from_numpy(inputL))
+    if (ARGS.gpu):
+        inputL = inputL.cuda()
     return inputL, row, col, Lab
 
 
@@ -59,8 +66,13 @@ modelFolder = 'trained_models/'
 # load model
 from model import *
 my_network = HourglassNet()
-my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model)))
-my_network.cuda()
+
+if (ARGS.gpu):
+    my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model)))
+    my_network.cuda()
+else:
+    my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model), map_location=torch.device('cpu')))
+
 my_network.train(False)
 
 lightFolder = 'data/example_light/'
@@ -72,7 +84,9 @@ if not os.path.exists(saveFolder):
 
 light_img, _, _, _ = preprocess_image('data/{}'.format(ARGS.light_image))
 
-sh = torch.zeros((1,9,1,1)).cuda()
+sh = torch.zeros((1,9,1,1))
+if (ARGS.gpu):
+    sh = sh.cuda()
 
 _, outputSH  = my_network(light_img, sh, 0)
 
