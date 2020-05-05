@@ -67,7 +67,7 @@ BATCH_SIZE = ARGS.batch
 LEARNING_RATE = ARGS.lr
 MAX_DATA = ARGS.data
 
-def train(model, optimizer, dataloader, epoch):
+def train(model, optimizer, dataloader, skip_count):
 
     num_batches = MAX_DATA // BATCH_SIZE
 
@@ -75,12 +75,6 @@ def train(model, optimizer, dataloader, epoch):
 
     for j, data in enumerate(dataloader, 0):
         I_sbatch, I_tbatch, L_sbatch, L_tbatch = data
-        if epoch < 5:
-            skip_count = 0
-        elif epoch < 8:
-            skip_count = epoch - 4
-        else:
-            skip_count = 4
 
         I_sbatch = torch.squeeze(I_sbatch, dim=1).cuda()
         L_tbatch = torch.squeeze(L_tbatch, dim=1).cuda()
@@ -125,7 +119,7 @@ for i in range(EPOCHS):
     start = time.time()
     print("Training epoch #", i + 1, "/", EPOCHS)
 
-    train(model, optimizer, dataloader, i)
+    train(model, optimizer, dataloader, 0)
     end = time.time()
     print("Time elapsed to train epoch #", i + 1, ":", end - start)
 

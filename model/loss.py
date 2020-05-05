@@ -11,7 +11,7 @@ def L1(I_t, I_tp, L_s, L_sp):
 
     light_l2 = torch.sum((L_s - L_sp) ** 2)
 
-    loss = ((img_l1 + grad_l1) / (128 * 128)) + (light_l2 / 9)
+    loss = ((img_l1 + grad_l1) / (256 * 256)) + (light_l2 / 9)
     return loss
 
 def L1_alternate(I_t, I_tp, L_s, L_sp):
