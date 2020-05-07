@@ -16,6 +16,8 @@ import torch
 import cv2
 import argparse
 
+# This code is adapted from https://github.com/zhhoper/DPR
+
 
 def parse_args():
     parser = argparse.ArgumentParser(

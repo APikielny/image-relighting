@@ -12,6 +12,7 @@ from loss import L1, L1_alternate
 from data import CelebData
 from debug import debug
 
+# Script to train the model, which is saved in trained_models
 
 def parse_args():
     parser = argparse.ArgumentParser(

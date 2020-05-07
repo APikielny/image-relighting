@@ -6,6 +6,8 @@ import sys
 from utils_shtools import *
 from pyshtools.rotate import djpi2, SHRotateRealCoef
 
+# This code is taken directly from https://github.com/zhhoper/DPR
+
 class sh_cvt():
     '''
         the normal direction we get from projection is:

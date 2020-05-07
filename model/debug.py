@@ -10,7 +10,8 @@ import numpy as np
 from torch.autograd import Variable
 import torch
 import cv2
-import argparse
+
+# Debugs the model during training
 
 def debug(model, epoch, modelId = None):
     lightFolder = '../data/example_light/'

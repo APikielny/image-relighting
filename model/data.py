@@ -5,6 +5,9 @@ import torch
 import os
 from torch.utils.data import Dataset
 
+# Load and process training data from dpr folders
+# his code is taken directly from https://github.com/zhhoper/DPR
+
 class CelebData(Dataset):
     def __init__(self, root_dir, max_data):
         paths = []

@@ -5,6 +5,8 @@ import pyshtools
 from pyshtools.expand import MakeGridDH
 import numpy as np
 
+# This code is taken directly from https://github.com/zhhoper/DPR
+
 def shtools_matrix2vec(SH_matrix):
     '''
         for the sh matrix created by sh tools, 
