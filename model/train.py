@@ -16,30 +16,30 @@ from debug import debug
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Training the network")
+        description="Train a new model.")
     parser.add_argument(
         '--epochs',
         default=10,
         type=int,
-        help='the number of epochs to run',
+        help='number of epochs',
     )
     parser.add_argument(
         '--batch',
         default=100,
         type=int,
-        help='the batch size'
+        help='batch size'
     )
     parser.add_argument(
         '--lr',
         type=float,
         default=0.0001,
-        help='learning rate for the model'
+        help='learning rate for Adam optimizer'
     )
     parser.add_argument(
         '--data',
         default=30000,
         type=int,
-        help='size of data to use'
+        help='number of data points to use'
     )
     parser.add_argument(
         '--model',
@@ -49,7 +49,7 @@ def parse_args():
     parser.add_argument(
         '--verbose',
         action='store_true',
-        help='print additional information if true')
+        help='print additional information')
     parser.add_argument(
         '--debug',
         action='store_true',
