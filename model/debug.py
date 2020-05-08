@@ -14,8 +14,8 @@ import cv2
 # Debugs the model during training
 
 def debug(model, epoch, modelId = None):
-    lightFolder = '../data/example_light/'
-    imgPath = '../data/obama.jpg'
+    lightFolder = '../data/test/light/'
+    imgPath = '../data/test/images/obama.jpg'
 
     ##### getting image
     img = cv2.imread(imgPath)
