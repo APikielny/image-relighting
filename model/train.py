@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Local Files
 from model import HourglassNet
-from loss import L1, L1_alternate
+from loss import L1
 from data import CelebData
 from debug import debug
 
