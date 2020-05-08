@@ -23,7 +23,7 @@ can be installed with `pip install -r requirements.txt`.
 
 ## Model Training
 The `train.py` file can be found in the model directory along with files for data loading,
-the loss function, and the model itself.
+the loss function, and the model itself. The image folders from the dataset must be moved into the `data/train/` directory.
 
 Train a new model `python train.py [-h] [--epochs EPOCHS] [--batch BATCH] [--lr LR] [--data DATA] [--model MODEL] [--verbose] [--debug]`
 
