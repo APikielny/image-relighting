@@ -35,7 +35,7 @@ def parse_args():
     )
     parser.add_argument(
         '--model',
-        default='default.pt',
+        default='trained.pt',
         help='model file to use stored in trained_model/'
     )
     parser.add_argument(
