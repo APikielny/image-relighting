@@ -99,7 +99,7 @@ if (ARGS.gpu):
 
 _, outputSH  = my_network(light_img, sh, 0)
 
-src_img, row, col, Lab = preprocess_image('data/test/light/{}'.format(ARGS.source_image), 1)
+src_img, row, col, Lab = preprocess_image('data/test/images/{}'.format(ARGS.source_image), 1)
 
 outputImg, _ = my_network(src_img, outputSH, 0)
 
