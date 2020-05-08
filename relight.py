@@ -91,7 +91,7 @@ saveFolder = os.path.join(saveFolder, ARGS.model.split(".")[0])
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
-light_img, _, _, _ = preprocess_image('data/{}'.format(ARGS.light_image), 2)
+light_img, _, _, _ = preprocess_image('data/test/images/{}'.format(ARGS.light_image), 2)
 
 sh = torch.zeros((1,9,1,1))
 if (ARGS.gpu):
@@ -99,7 +99,7 @@ if (ARGS.gpu):
 
 _, outputSH  = my_network(light_img, sh, 0)
 
-src_img, row, col, Lab = preprocess_image('data/{}'.format(ARGS.source_image), 1)
+src_img, row, col, Lab = preprocess_image('data/test/light/{}'.format(ARGS.source_image), 1)
 
 outputImg, _ = my_network(src_img, outputSH, 0)
 
