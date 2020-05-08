@@ -101,7 +101,7 @@ class live_transfer_handler():
 
         # load model
         my_network = HourglassNet()
-        my_network.load_state_dict(torch.load("trained_models/model256.pt", map_location=torch.device('cpu')))
+        my_network.load_state_dict(torch.load("trained_models/trained.pt", map_location=torch.device('cpu')))
         my_network.train(False)
         self.model = my_network
 
