@@ -19,7 +19,7 @@ def debug(model, epoch, modelId = None):
 
     ##### getting image
     img = cv2.imread(imgPath)
-    row, col = img.shape
+    row, col, _ = img.shape
     img = cv2.resize(img, (128, 128))
     Lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB) #converts image to one color space LAB
 
