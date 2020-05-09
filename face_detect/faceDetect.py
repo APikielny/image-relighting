@@ -31,8 +31,8 @@ def cropFace(img):
 
     # show the image
     image = pixels[max(y - BUFFER, 0):min(y2 + BUFFER, pixels.shape[0]), max(x - BUFFER, 0):min(x2 + BUFFER, pixels.shape[1])]
-    imshow('hehe', image)
-    waitKey(0)
+    # imshow('hehe', image)
+    # waitKey(0)
     return image
 
 #cropFace(1)

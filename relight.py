@@ -96,11 +96,16 @@ sh = torch.zeros((1,9,1,1))
 if (ARGS.gpu):
     sh = sh.cuda()
 
+print("loaded model. Preprocessing")
+
 _, outputSH  = my_network(light_img, sh, 0)
 
 src_img, row, col, Lab = preprocess_image('data/{}'.format(ARGS.source_image), 1)
 
+print("running model")
 outputImg, _ = my_network(src_img, outputSH, 0)
+
+print("finished first run")
 
 outputImg = outputImg[0].cpu().data.numpy()
 outputImg = outputImg.transpose((1,2,0))
