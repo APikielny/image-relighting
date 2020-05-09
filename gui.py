@@ -4,8 +4,7 @@ from tkinter import filedialog
 import cv2
 import os
 
-from faceDetect import cropFace
-from relight import Relight
+from face_detect.faceDetect import cropFace2
 
 class ImportImg():
 
@@ -67,7 +66,7 @@ class SelectLightFace():
         apply_img_label = Label(self.root, image=apply_img)
 
 
-        self.face_list = cropFace(self.pull_filepath)
+        self.face_list = cropFace2(self.pull_filepath)
         self.face_list_np = self.face_list.copy()
         self.convertNumpyImgs(self.face_list)
         self.curr = 0
@@ -114,5 +113,53 @@ class SelectLightFace():
         for i in range(len(np_faces)):
             np_faces[i] = ImageTk.PhotoImage(Image.fromarray(np_faces[i], 'RGB').resize((512, 512)))
 
+
+class Relight():
+    def __init__(self, source, light, dest):
+        self.relighting(source, light, dest)
+
+    def preprocess_image(self, img):
+        row, col, _ = img.shape
+        src_img = cv2.resize(img, (256, 256))
+        Lab = cv2.cvtColor(src_img, cv2.COLOR_BGR2LAB)
+
+        inputL = Lab[:, :, 0]
+        inputL = inputL.astype(np.float32) / 255.0
+        inputL = inputL.transpose((0, 1))
+        inputL = inputL[None, None, ...]
+        inputL = Variable(torch.from_numpy(inputL))
+
+        return inputL, row, col, Lab
+
+    def relighting(self, source, light, dest):
+        # load model
+        my_network = HourglassNet()
+
+        my_network.load_state_dict(torch.load('trained_models/trained.pt', map_location=torch.device('cpu')))
+
+        my_network.train(False)
+
+        # saveFolder = os.path.join(saveFolder, source_path.split(".")[0])
+
+        light_img, _, _, _ = self.preprocess_image(light)
+
+        sh = torch.zeros((1, 9, 1, 1))
+
+        _, outputSH = my_network(light_img, sh, 0)
+
+        src_img, row, col, Lab = self.preprocess_image(source)
+
+        outputImg, _ = my_network(src_img, outputSH, 0)
+
+        outputImg = outputImg[0].cpu().data.numpy()
+        outputImg = outputImg.transpose((1, 2, 0))
+        outputImg = np.squeeze(outputImg)
+        outputImg = (outputImg * 255.0).astype(np.uint8)
+        Lab[:, :, 0] = outputImg
+        resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
+        resultLab = cv2.resize(resultLab, (col, row))
+
+        cv2.imwrite(os.path.join(dest,
+                                 'relit.jpg'), resultLab)
 
 ImportImg()
