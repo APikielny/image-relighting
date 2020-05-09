@@ -2,6 +2,9 @@
     construct shading using sh basis
 '''
 import numpy as np
+
+# This code is taken directly from https://github.com/zhhoper/DPR
+
 def SH_basis(normal):
     '''
         get SH basis based on normal

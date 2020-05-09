@@ -16,6 +16,7 @@ import torch
 import cv2
 import argparse
 
+# This code is adapted from https://github.com/zhhoper/DPR
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -27,8 +28,13 @@ def parse_args():
     )
     parser.add_argument(
         '--model',
-        default='default.pt',
+        default='trained.pt',
         help='model file to use stored in trained_model/'
+    )
+    parser.add_argument(
+        '--gpu',
+        action='store_true',
+        help='cpu vs. gpu'
     )
 
     return parser.parse_args()
@@ -57,27 +63,32 @@ modelFolder = 'trained_models/'
 # load model
 from model import *
 my_network = HourglassNet()
-my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model)))
-my_network.cuda()
+if (ARGS.gpu):
+    my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model)))
+    my_network.cuda()
+else:
+    my_network.load_state_dict(torch.load(os.path.join(modelFolder, ARGS.model), map_location=torch.device('cpu')))
 my_network.train(False)
 
-lightFolder = 'data/example_light/'
+lightFolder = 'data/test/light/'
 
 saveFolder = 'result'
 saveFolder = os.path.join(saveFolder, ARGS.model.split(".")[0])
 if not os.path.exists(saveFolder):
     os.makedirs(saveFolder)
 
-img = cv2.imread('data/{}'.format(ARGS.image))
+img = cv2.imread('data/test/images/{}'.format(ARGS.image))
 row, col, _ = img.shape
-img = cv2.resize(img, (128, 128))
+img = cv2.resize(img, (256, 256))
 Lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB) #converts image to one color space LAB
 
 inputL = Lab[:,:,0] #taking only the L channel
 inputL = inputL.astype(np.float32)/255.0 #normalise
 inputL = inputL.transpose((0,1))
 inputL = inputL[None,None,...] #not sure what's happening here
-inputL = Variable(torch.from_numpy(inputL).cuda())
+inputL = Variable(torch.from_numpy(inputL))
+if ARGS.gpu:
+    inputL = inputL.cuda()
 
 def render_half_sphere(sh, output):
     sh = np.squeeze(sh)
@@ -97,13 +108,15 @@ def render_half_sphere(sh, output):
 for i in range(7):
     sh = np.loadtxt(os.path.join(lightFolder, 'rotate_light_{:02d}.txt'.format(i)))
     sh = sh[0:9]
-    sh = sh * 0.7
+    sh = sh * 0.5
 
     render_half_sphere(sh, False)
 
     #  rendering images using the network
     sh = np.reshape(sh, (1,9,1,1)).astype(np.float32)
-    sh = Variable(torch.from_numpy(sh).cuda())
+    sh = Variable(torch.from_numpy(sh))
+    if ARGS.gpu:
+        sh = sh.cuda()
     #sh = Variable(torch.from_numpy(sh))
 
 
@@ -118,7 +131,7 @@ for i in range(7):
     outputImg = (outputImg*255.0).astype(np.uint8)
     Lab[:,:,0] = outputImg
     resultLab = cv2.cvtColor(Lab, cv2.COLOR_LAB2BGR)
-    # resultLab = cv2.resize(resultLab, (col, row))
+    resultLab = cv2.resize(resultLab, (col, row))
     img_name, e = os.path.splitext(ARGS.image)
     cv2.imwrite(os.path.join(saveFolder,
          '{}_{:02d}.jpg'.format(img_name,i)), resultLab)

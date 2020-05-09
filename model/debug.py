@@ -10,15 +10,16 @@ import numpy as np
 from torch.autograd import Variable
 import torch
 import cv2
-import argparse
+
+# Debugs the model during training
 
 def debug(model, epoch, modelId = None):
-    lightFolder = '../data/example_light/'
-    imgPath = '../data/obama.jpg'
+    lightFolder = '../data/test/light/'
+    imgPath = '../data/test/images/obama.jpg'
 
     ##### getting image
     img = cv2.imread(imgPath)
-    row, col = img.shape
+    row, col, _ = img.shape
     img = cv2.resize(img, (128, 128))
     Lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB) #converts image to one color space LAB
 

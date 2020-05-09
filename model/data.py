@@ -8,18 +8,15 @@ from torch.utils.data import Dataset
 class CelebData(Dataset):
     def __init__(self, root_dir, max_data):
         paths = []
-        for i in range(6):
-            folder_path = os.path.join(root_dir, 'dpr_{:d}'.format(i * 5000))
-            img_folders = os.listdir(folder_path)
-            for img_folder in img_folders:
-                path = os.path.join(folder_path, img_folder)
-                if os.path.isdir(path):
-                    paths.append(path)
-                    if len(paths) == max_data:
-                        break
+        img_folders = os.listdir(root_dir)
+        for img_folder in img_folders:
+            img_path = os.path.join(root_dir, img_folder)
+            if os.path.isdir(img_path):
+                paths.append(img_path)
+                if len(paths) == max_data:
+                    break
             if len(paths) == max_data:
                 break
-
         add = max_data - len(paths)
         if add <= 0:
             self.paths = paths
