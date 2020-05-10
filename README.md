@@ -32,21 +32,19 @@ There are multiple ways to test our model, detailed below. For each test, we all
 
 The image(s) should be stored in the folder `data/test/images/`. The model should be stored in `trained_models/`. Use the `--gpu` flag if you'd like to run on a CUDA GPU (such as on Google Cloud Platform). 
 
-1. To relight a face from several angles, use `test_network.py`. 
-
-- The `test_network.py` file can be run using: 
+1. To relight a face from several angles, use `test_network.py`. The `test_network.py` file can be run using: 
 - `python test_network.py [-h] [--image IMAGE)] [--model MODEL] [--gpu]`
 
 2. To relight based on lighting from another face, use:
-`python relight.py [-h] [--source_image SOURCE_IMAGE] [--light_image LIGHT_IMAGE] [--model MODEL] [--gpu] [--face_detect FACE_DETECT]`
+- `python relight.py [-h] [--source_image SOURCE_IMAGE] [--light_image LIGHT_IMAGE] [--model MODEL] [--gpu] [--face_detect FACE_DETECT]`
 
-The `[--face_detect]` flag can be passed "both" or "light". "Light" will only run face detection on the lighting input, which is recommended. Running "both" will crop both faces, so the output face will also be cropped.
+- The `[--face_detect]` flag can be passed "both" or "light". "Light" will only run face detection on the lighting input, which is recommended. Running "both" will crop both faces, so the output face will also be cropped.
 
 3. The `live_lighting_transfer.py` file can be run to see a live webcam view with dynamic relighting:
 
-`python live_lighting_transfer.py [-h] [--light_image LIGHT_IMAGE] [--light_text LIGHT_TEXT]`
+- `python live_lighting_transfer.py [-h] [--light_image LIGHT_IMAGE] [--light_text LIGHT_TEXT]`
 
-`[--light_text]` is the target lighting as an array. 
+- `[--light_text]` is the target lighting as an array. 
 
 4. The `gui.py` file can be run using `python gui.py` in the `GUI` folder.
 
