@@ -28,19 +28,30 @@ the loss function, and the model itself. To train the model, the image folders f
 Train a new model using: `python train.py [-h] [--epochs EPOCHS] [--batch BATCH] [--lr learning_rate] [--data DATA] [--model MODEL] [--verbose] [--debug]`
 
 ## Model Testing
-There are multiple ways to test our model. The image(s) should be stored in the folder `data/test/images/`. The model should be stored in `trained_models/`. Use the `--gpu` flag if you'd like to run on a CUDA GPU (such as on Google Cloud). 
+There are multiple ways to test our model, detailed below. For each test, you can specify input images, the model to use, and whether or not to use a GPU.
+
+The image(s) should be stored in the folder `data/test/images/`. The model should be stored in `trained_models/`. Use the `--gpu` flag if you'd like to run on a CUDA GPU (such as on Google Cloud Platform). 
 
 To relight a face from several angles, use `test_network.py`. 
+
 The `test_network.py` file can be run using: 
 `python test_network.py [-h] [--image IMAGE)] [--model MODEL] [--gpu]`
 
 To relight based on lighting from another face, use:
 `python relight.py [-h] [--source_image SOURCE_IMAGE] [--light_image LIGHT_IMAGE] [--model MODEL] [--gpu] [--face_detect FACE_DETECT]`
+
 The `[--face_detect]` flag can be passed "both" or "light". "Light" will only run face detection on the lighting input, which is recommended. Running "both" will crop both faces, so the output face will also be cropped.
 
-The `live_lighting_transfer.py` file...
+The `live_lighting_transfer.py` file can be run to see a live webcam view with dynamic relighting:
 
-The `gui.py` file...
+`python live_lighting_transfer.py [-h] [--light_image LIGHT_IMAGE] [--light_text LIGHT_TEXT]`
+
+`[--light_text]` is the target lighting as an array. 
+
+
+
+The `gui.py` file can be run using `python gui.py` in the `GUI` folder.
+
 - Use any image that contains faces for lighting reference--no cropping necessary
 - For the image you would like to apply lighting to, please crop close to the face prior to input.
 
