@@ -4,6 +4,19 @@ from tkinter import filedialog
 import cv2
 import os
 
+import sys
+sys.path.append('model')
+sys.path.append('utils')
+
+from utils_SH import *
+
+# other modules
+import numpy as np
+
+from torch.autograd import Variable
+import torch
+
+from model import HourglassNet
 from face_detect.faceDetect import cropFace2
 
 class ImportImg():
@@ -138,8 +151,6 @@ class Relight():
         my_network.load_state_dict(torch.load('trained_models/trained.pt', map_location=torch.device('cpu')))
 
         my_network.train(False)
-
-        # saveFolder = os.path.join(saveFolder, source_path.split(".")[0])
 
         light_img, _, _, _ = self.preprocess_image(light)
 
