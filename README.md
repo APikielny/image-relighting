@@ -1,6 +1,6 @@
 # image-relighting
 
-CS1430 Final Project: Image Relighting
+Brown CS1430 Final Project: Image Relighting
 
 # Team
 Aalia Habib, Adam Pikielny, Jack Dermer, Ben Givertz
@@ -11,7 +11,7 @@ Monsters.inc
 
 ## Overview
 ![Obama image](https://drive.google.com/uc?export=view&id=1lfOdoKQiPb8-ut_D85u24SzUT8fSG2wP)
-![Face to face relighting](https://github.com/APikielny/image-relighting/blob/master/README/adamaaliamix%20crop.png)
+![Face to face relighting](https://drive.google.com/uc?export=view&id=1Lr8nTKeliPNehLM0htAdGk7_6r58CS98)
 
 
 
