@@ -14,7 +14,6 @@ Monsters.inc
 ![Face to face relighting](https://drive.google.com/uc?export=view&id=1Lr8nTKeliPNehLM0htAdGk7_6r58CS98)
 
 
-
 Traditional methods for relighting faces requires knowledge of the subject's reflectance, lighting, and structure. We sought out to implement a deep learning algorithm to solve this task and relight portraits given only a single image as input. We implemented an Hourglass-shaped CNN from research by Zhou et al., [Deep Single Image Portrait Relighting](https://zhhoper.github.io/dpr.html), in order to relight portrait images. The model first separates the input image into facial and lighting features, from which a specialized lighting network predicts the direction of light. Then, the facial features are combined with the desired new lighting. Using a synthesized data set of portrait images under various artificial lighting conditions for training and ground truth, we were able to achieve realistic results, outputting images at a resolution of 256*256.
 
 ## Dataset
