@@ -28,14 +28,14 @@ the loss function, and the model itself. To train the model, the image folders f
 Train a new model using: `python train.py [-h] [--epochs EPOCHS] [--batch BATCH] [--lr learning_rate] [--data DATA] [--model MODEL] [--verbose] [--debug]`
 
 ## Model Testing
-There are multiple ways to test our model, detailed below. For each test, you can specify input images, the model to use, and whether or not to use a GPU.
+There are multiple ways to test our model, detailed below. For each test, we allow specification of input images, the model to use, and whether or not to use a GPU.
 
 The image(s) should be stored in the folder `data/test/images/`. The model should be stored in `trained_models/`. Use the `--gpu` flag if you'd like to run on a CUDA GPU (such as on Google Cloud Platform). 
 
 1. To relight a face from several angles, use `test_network.py`. 
 
-The `test_network.py` file can be run using: 
-`python test_network.py [-h] [--image IMAGE)] [--model MODEL] [--gpu]`
+* The `test_network.py` file can be run using: 
+* `python test_network.py [-h] [--image IMAGE)] [--model MODEL] [--gpu]`
 
 2. To relight based on lighting from another face, use:
 `python relight.py [-h] [--source_image SOURCE_IMAGE] [--light_image LIGHT_IMAGE] [--model MODEL] [--gpu] [--face_detect FACE_DETECT]`
