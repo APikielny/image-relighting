@@ -10,7 +10,7 @@ Monsters.inc
 # Project
 
 ## Overview
-![Obama image](https://drive.google.com/uc?export=view&id=1lfOdoKQiPb8-ut_D85u24SzUT8fSG2wP)
+![Obama image](https://imgur.com/VvKOCK8)
 ![Face to face relighting](https://drive.google.com/uc?export=view&id=1Lr8nTKeliPNehLM0htAdGk7_6r58CS98)
 
 
