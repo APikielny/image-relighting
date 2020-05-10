@@ -10,7 +10,7 @@ Monsters.inc
 # Project
 
 ## Overview
-![Obama relit](https://github.com/APikielny/image-relighting/blob/master/README/obamaResults.png)
+![Obama image](https://drive.google.com/uc?export=view&id=1lfOdoKQiPb8-ut_D85u24SzUT8fSG2wP)
 ![Face to face relighting](https://github.com/APikielny/image-relighting/blob/master/README/adamaaliamix%20crop.png)
 
 
