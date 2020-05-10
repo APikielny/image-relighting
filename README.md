@@ -23,12 +23,16 @@ can be installed with `pip install -r requirements.txt`.
 
 ## Model Training
 The `train.py` file can be found in the model directory along with files for data loading,
-the loss function, and the model itself. The image folders from the dataset must be moved into the `data/train/` directory.
+the loss function, and the model itself. To train the model, the image folders from the dataset must be moved into the `data/train/` directory.
 
-Train a new model `python train.py [-h] [--epochs EPOCHS] [--batch BATCH] [--lr LR] [--data DATA] [--model MODEL] [--verbose] [--debug]`
+Train a new model using: `python train.py [-h] [--epochs EPOCHS] [--batch BATCH] [--lr learning_rate] [--data DATA] [--model MODEL] [--verbose] [--debug]`
 
 ## Model Testing
-The `test_network.py` file...
+There are multiple ways to test our model.
+
+To relit a face from several angles, use `test_network.py`. 
+The `test_network.py` file can be run using: 
+`python test_network.py [-h] [--image (portrait image)] [--model (model stored in trained_models/)] [--gpu if you'd like to run on a cuda GPU]` 
 
 The `relight.py` file...
 
