@@ -32,10 +32,10 @@ There are multiple ways to test our model, detailed below. For each test, we all
 
 The image(s) should be stored in the folder `data/test/images/`. The model should be stored in `trained_models/`. Use the `--gpu` flag if you'd like to run on a CUDA GPU (such as on Google Cloud Platform). 
 
-# 1. To relight a face from several angles, use `test_network.py`. 
+1. To relight a face from several angles, use `test_network.py`. 
 
-: The `test_network.py` file can be run using: 
-> `python test_network.py [-h] [--image IMAGE)] [--model MODEL] [--gpu]`
+  The `test_network.py` file can be run using: 
+  `python test_network.py [-h] [--image IMAGE)] [--model MODEL] [--gpu]`
 
 2. To relight based on lighting from another face, use:
 `python relight.py [-h] [--source_image SOURCE_IMAGE] [--light_image LIGHT_IMAGE] [--model MODEL] [--gpu] [--face_detect FACE_DETECT]`
