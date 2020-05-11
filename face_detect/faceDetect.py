@@ -45,7 +45,7 @@ def cropFace2(img_path):
     pixels = img
 
     # load the pre-trained model
-    classifier = CascadeClassifier('haarcascade_frontalface_default.xml')
+    classifier = CascadeClassifier('face_detect/haarcascade_frontalface_default.xml')
 
     # perform face detection
     bboxes = classifier.detectMultiScale(pixels)
