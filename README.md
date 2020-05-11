@@ -50,7 +50,7 @@ The image(s) should be stored in the folder `data/test/images/`. The model shoul
 
 - `[--light_text]` is the target lighting as an array. 
 
-4. The `gui.py` file can be run using `python gui.py` in the `GUI` folder.
+4. The `gui.py` file can be run using `python gui.py`.
 
 - Use any image that contains faces for lighting reference--no cropping necessary
 - For the image you would like to apply lighting to, please crop close to the face prior to input.
