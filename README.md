@@ -1,6 +1,6 @@
-# image-relighting
+# Portrait Image Relighting
 
-CS1430 Final Project: Image Relighting
+CS1430 Final Project: Portrait Image Relighting
 
 # Team
 Aalia Habib, Adam Pikielny, Jack Dermer, Ben Givertz
