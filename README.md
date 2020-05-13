@@ -18,7 +18,7 @@ Traditional methods for relighting faces require knowledge of the subject's refl
 ## Dataset
 Due to computational and storage limitations, we used a scaled down version of the
 DPR dataset created by the original paper. The images were scaled down to both
-128x128 and 256x255. Both datasets are available for download on [Google Drive](https://drive.google.com/open?id=1v-8FebXQPk5YqlWYYDe7frwy9OkJ24yq).
+128x128 and 256x256. Both datasets are available for download on [Google Drive](https://drive.google.com/open?id=1v-8FebXQPk5YqlWYYDe7frwy9OkJ24yq).
 
 # Usage
 The dependencies for this project can be found in the `requirements.txt` file and
