@@ -37,6 +37,11 @@ def parse_args():
         default=None,
         help='path to lighting matrix to copy',
     )
+    parser.add_argument(
+        '--video_path',
+        default=None,
+        help='specify a path to a video to be relit, instead of the webcam'
+    )
     
     return parser.parse_args()
 
@@ -81,9 +86,12 @@ class live_transfer_handler():
     model = 0
     target = None
 
-    def __init__(self, target_img_path, target_text_path, **kwargs):        
+    def __init__(self, target_img_path, target_text_path, video_path, **kwargs):        
         # Camera device
-        self.vc = cv2.VideoCapture(0)
+        if (video_path is not None):
+            self.vc = cv2.VideoCapture(video_path)
+        else:
+            self.vc = cv2.VideoCapture(0)
 
         if not self.vc.isOpened():
             print( "No camera found or error opening camera." )
@@ -167,4 +175,4 @@ class live_transfer_handler():
 
 ARGS = parse_args()
 
-live_transfer_handler(ARGS.light_image, ARGS.light_text)
+live_transfer_handler(ARGS.light_image, ARGS.light_text, ARGS.video_path)
