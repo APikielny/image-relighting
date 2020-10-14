@@ -23,7 +23,6 @@ import argparse
 
 from model import *
 
-
 def parse_args():
     parser = argparse.ArgumentParser(
         description="live image relighting")
@@ -38,9 +37,14 @@ def parse_args():
         help='path to lighting matrix to copy',
     )
     parser.add_argument(
-        '--video_path',
+        '--input_path',
         default=None,
         help='specify a path to a video to be relit, instead of the webcam'
+    )
+    parser.add_argument(
+        '--output_path',
+        default='output.avi',
+        help='specify path to write output video to, if input was specified'
     )
     
     return parser.parse_args()
@@ -86,10 +90,10 @@ class live_transfer_handler():
     model = 0
     target = None
 
-    def __init__(self, target_img_path, target_text_path, video_path, **kwargs):        
+    def __init__(self, target_img_path, target_text_path, input_path, **kwargs):        
         # Camera device
-        if (video_path is not None):
-            self.vc = cv2.VideoCapture(video_path)
+        if (input_path is not None):
+            self.vc = cv2.VideoCapture(input_path)
         else:
             self.vc = cv2.VideoCapture(0)
 
@@ -101,11 +105,12 @@ class live_transfer_handler():
         else:
             # We found a camera!
             # Requested camera size. This will be cropped square later on, e.g., 240 x 240
-            self.vc.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-            self.vc.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+            if (input_path is None):
+                # Set the size of the output window
 
-        # Set the size of the output window
-        cv2.namedWindow(self.wn, 0)
+                self.vc.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+                self.vc.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+                cv2.namedWindow(self.wn, 0)            
 
         # load model
         my_network = HourglassNet()
@@ -133,17 +138,25 @@ class live_transfer_handler():
             print("No target specified")
             return
 
+        videoWriter = None
+        if (ARGS.output_path is not None):
+            _, img = self.vc.read()
+            print("relit shape: ", img.shape)
+            videoWriter = cv2.VideoWriter(ARGS.output_path,cv2.VideoWriter_fourcc(*'MJPG'), 30, (1080,1080))
+
+        #if flag is true, pass to relighter
         # Main loop
         while True:
             a = time.perf_counter()
-            self.relighter()
-            print('framerate = {} fps \r'.format(1. / (time.perf_counter() - a)))
+            self.relighter(videoWriter)
+            if (ARGS.input_path is None):
+                print('framerate = {} fps \r'.format(1. / (time.perf_counter() - a)))
     
         if self.use_camera:
             # Stop camera
             self.vc.release()
 
-    def relighter(self):  
+    def relighter(self, writer = None):
         if self.use_camera:
             # Read image
             _, im = self.vc.read()
@@ -160,19 +173,47 @@ class live_transfer_handler():
         # Set size
         width = 256
         height = 256
-        cv2.resizeWindow(self.wn, width*2, height*2)
+        if (ARGS.input_path is None):
+            cv2.resizeWindow(self.wn, width*2, height*2)
 
         real = img_as_float(self.im)
         relit = relight_image(self.model, self.im, self.target)
         relit = img_as_float(relit)
         output = np.clip(np.concatenate((real,relit),axis = 1),0,1)
 
-        cv2.imshow(self.wn, output) 
-        
-        cv2.waitKey(1)
+
+        if writer is not None:
+            # writer.write(output)
+            # testVid = relit[:,:,0]*255.0
+            # testVid[testVid > -5] = 0.5
+            # # print("Shape: ", testVid.shape)
+            # print(testVid)
+
+            # testVid = None
+            # hsv = cv2.cvtColor(relit, cv2.COLOR_BGR2HSV)
+
+            # writer.write(relit * 255.0)
+
+            # cv2.imwrite("relitVid/testIm" + str(i) + ".jpg", 255.0*relit)
+            # img = cv2.imread("relitVid/testIm" + str(i) + ".jpg")
+            # img = np.zeros((1080,1080,3))
+            # print(img)
+            # print((relit*255).astype(int))
+            # print("img shape", img.shape)
+            # print("relit shape", (relit*255).astype(int).shape)
+
+            frame = (relit*255).astype('uint8')
+
+
+            writer.write(frame)
+
+        if (ARGS.input_path is None):
+            cv2.imshow(self.wn, relit)
+            cv2.waitKey(1)
+
 
         return
 
 ARGS = parse_args()
 
-live_transfer_handler(ARGS.light_image, ARGS.light_text, ARGS.video_path)
+live_transfer_handler(ARGS.light_image, ARGS.light_text, ARGS.input_path)
