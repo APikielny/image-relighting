@@ -1,6 +1,9 @@
 # Large Files
 data/train/*
 result/*
+*.MP4
+*.avi
+*.MOV
 
 # Misc
 .idea

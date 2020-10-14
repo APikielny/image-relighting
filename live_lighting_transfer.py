@@ -141,14 +141,17 @@ class live_transfer_handler():
         videoWriter = None
         if (ARGS.output_path is not None):
             _, img = self.vc.read()
-            print("relit shape: ", img.shape)
-            videoWriter = cv2.VideoWriter(ARGS.output_path,cv2.VideoWriter_fourcc(*'MJPG'), 30, (1080,1080))
+            dim1 = img.shape[0]
+            dim2 = img.shape[1]
+            #for now I am fixing this as a square because it gets better results
+            videoWriter = cv2.VideoWriter(ARGS.output_path,cv2.VideoWriter_fourcc(*'MJPG'), 30, (dim1,dim1)) #change to dim2, dim1 to output not a square
 
         #if flag is true, pass to relighter
         # Main loop
-        while True:
+        end = False
+        while not end:
             a = time.perf_counter()
-            self.relighter(videoWriter)
+            end = self.relighter(videoWriter)
             if (ARGS.input_path is None):
                 print('framerate = {} fps \r'.format(1. / (time.perf_counter() - a)))
     
@@ -157,23 +160,32 @@ class live_transfer_handler():
             self.vc.release()
 
     def relighter(self, writer = None):
+
         if self.use_camera:
             # Read image
             _, im = self.vc.read()
+            if im is None:
+                writer.release()
+                return True
             
-            if im.shape[1] > im.shape[0]:
-                cropx = int((im.shape[1]-im.shape[0])/2)
-                cropy = 0
-            elif im.shape[0] > im.shape[1]:
-                cropx = 0
-                cropy = int((im.shape[0]-im.shape[1])/2)
+            # if ARGS.input_path is None:
+            if True: #for now I am fixing this as a square because it gets better results
+                if im.shape[1] > im.shape[0]:
+                    cropx = int((im.shape[1]-im.shape[0])/2)
+                    cropy = 0
+                elif im.shape[0] > im.shape[1]:
+                    cropx = 0
+                    cropy = int((im.shape[0]-im.shape[1])/2)
 
-            self.im = im[cropy:im.shape[0]-cropy, cropx:im.shape[1]-cropx]
+                self.im = im[cropy:im.shape[0]-cropy, cropx:im.shape[1]-cropx]
 
-        # Set size
-        width = 256
-        height = 256
+            else:
+                self.im = im
+
         if (ARGS.input_path is None):
+            # Set size
+            width = 256
+            height = 256
             cv2.resizeWindow(self.wn, width*2, height*2)
 
         real = img_as_float(self.im)
@@ -183,34 +195,12 @@ class live_transfer_handler():
 
 
         if writer is not None:
-            # writer.write(output)
-            # testVid = relit[:,:,0]*255.0
-            # testVid[testVid > -5] = 0.5
-            # # print("Shape: ", testVid.shape)
-            # print(testVid)
-
-            # testVid = None
-            # hsv = cv2.cvtColor(relit, cv2.COLOR_BGR2HSV)
-
-            # writer.write(relit * 255.0)
-
-            # cv2.imwrite("relitVid/testIm" + str(i) + ".jpg", 255.0*relit)
-            # img = cv2.imread("relitVid/testIm" + str(i) + ".jpg")
-            # img = np.zeros((1080,1080,3))
-            # print(img)
-            # print((relit*255).astype(int))
-            # print("img shape", img.shape)
-            # print("relit shape", (relit*255).astype(int).shape)
-
             frame = (relit*255).astype('uint8')
-
-
             writer.write(frame)
 
         if (ARGS.input_path is None):
             cv2.imshow(self.wn, relit)
             cv2.waitKey(1)
-
 
         return
 
