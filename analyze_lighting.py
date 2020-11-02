@@ -166,3 +166,7 @@ for f in range(frames):
 mean = torch.mean(torch.stack(SHs), dim = 0)
 print("mean of SHs:", mean)
 
+frame = render_half_sphere(mean.cpu().data.numpy())
+cv2.imwrite('testsphere.jpg', frame)
+print('made frame')
+
