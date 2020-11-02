@@ -51,7 +51,11 @@ def parse_args():
     )
     parser.add_argument(
         '--output_light_path',
-        help='output path for lighting visualization'
+        help='output path for sphere video'
+    )
+    parser.add_argument(
+        '--output_sphere',
+        help='output path for sphere image'
     )
     
 
@@ -167,6 +171,4 @@ mean = torch.mean(torch.stack(SHs), dim = 0)
 print("mean of SHs:", mean)
 
 frame = render_half_sphere(mean.cpu().data.numpy())
-cv2.imwrite('testsphere.jpg', frame)
-print('made frame')
-
+cv2.imwrite(ARGS.output_sphere, frame)
