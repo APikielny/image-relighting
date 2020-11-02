@@ -123,7 +123,6 @@ my_network.train(False)
 # create video reader and writer
 if (ARGS.video_path is not None):
     vc = cv2.VideoCapture(ARGS.video_path)
-    print('captured')
 else:
     pass #break?
 
@@ -136,10 +135,10 @@ if (ARGS.output_light_path is not None):
 SHs = []
 
 _, img = vc.read()
-print("read")
 # i = 0
-while img is not None:
-    print('in loop')
+# while img is not None:
+frames = 30
+for f in len(frames):
     light_img, _, _, _ = preprocess_image(img, 2)
 
     sh = torch.zeros((1,9,1,1))
