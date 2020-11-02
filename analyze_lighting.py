@@ -138,7 +138,7 @@ _, img = vc.read()
 # i = 0
 # while img is not None:
 frames = 30
-for f in len(frames):
+for f in range(frames):
     light_img, _, _, _ = preprocess_image(img, 2)
 
     sh = torch.zeros((1,9,1,1))
