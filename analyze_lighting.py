@@ -18,7 +18,6 @@ from torch.autograd import Variable
 import torch
 import cv2
 import argparse
-import ffmpeg
 
 # This code is adapted from https://github.com/zhhoper/DPR
 
@@ -158,8 +157,8 @@ while img is not None:
 
     _, img = vc.read()
 
-if videoWriter is not None:
-    videoWriter.release()
+# if videoWriter is not None:
+#     videoWriter.release()
 # print(SHs)
 
 mean = torch.mean(torch.stack(SHs), dim = 0)
