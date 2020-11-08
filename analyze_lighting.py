@@ -18,6 +18,8 @@ from torch.autograd import Variable
 import torch
 import cv2
 import argparse
+import matplotlib.pyplot as plt
+
 
 # This code is adapted from https://github.com/zhhoper/DPR
 
@@ -56,6 +58,15 @@ def parse_args():
     parser.add_argument(
         '--output_sphere',
         help='output path for sphere image'
+    )
+    parser.add_argument(
+        '--plot_path',
+        help='output path for plots of SH coordinates'
+    )
+    parser.add_argument(
+        '--frames',
+        default = 30,
+        help='number of frames to analyze'
     )
     
 
@@ -137,11 +148,12 @@ if (ARGS.output_light_path is not None):
     videoWriter = cv2.VideoWriter(ARGS.output_light_path,cv2.VideoWriter_fourcc(*'MJPG'), 30, (256,256))
 
 SHs = []
+squashedOutput = [] #for plotting
 
 _, img = vc.read()
 # i = 0
 # while img is not None:
-frames = 30
+frames = ARGS.frames
 for f in range(frames):
     light_img, _, _, _ = preprocess_image(img, 2)
 
@@ -149,10 +161,11 @@ for f in range(frames):
 
     _, outputSH  = my_network(light_img, sh, 0)
     SHs.append(outputSH)
+    squashedOutput.append(torch.reshape(outputSH, (9,)).cpu().data.numpy())
 
 
+    ##########
     # rendering SH coords as sphere image/video
-
     # frame = render_half_sphere(outputSH.cpu().data.numpy())
 
     # cv2.imwrite('/Users/Adam/Desktop/brown/junior/cs1970/image-relighting/analyzeLightPics/frame' + str(i) + '.jpg', frame)
@@ -160,6 +173,7 @@ for f in range(frames):
 
     # frame = (frame*255).astype('uint8')
     # videoWriter.write(frame)
+    ##########
 
     _, img = vc.read()
 
@@ -168,7 +182,15 @@ for f in range(frames):
 # print(SHs)
 
 mean = torch.mean(torch.stack(SHs), dim = 0)
+var = torch.var(torch.stack(SHs), dim = 0)
 print("mean of SHs:", mean)
+print("var of SHs:", var)
 
-frame = render_half_sphere(mean.cpu().data.numpy())
-cv2.imwrite(ARGS.output_sphere, frame)
+if (ARGS.plot_path is not None):
+    plt.plot(squashedOutput)
+    plt.title('SHs over first ' + str(frames) + ' frames, for video: ' + ARGS.video_path)
+    plt.xlabel('Frame')
+    plt.savefig(ARGS.plot_path)
+
+# frame = render_half_sphere(mean.cpu().data.numpy())
+# cv2.imwrite(ARGS.output_sphere, frame)
