@@ -143,9 +143,10 @@ if (ARGS.gpu):
 i = 1
 dataDict = {}
 for filename in os.listdir(ARGS.videos_path):
-    if filename.endswith(".avi") or filename.endswith(".MP4"):
+    if filename.endswith(".avi") or filename.endswith(".MP4") or filename.endswith(".mp4"):
         # create video reader and writer
-        vc = cv2.VideoCapture(filename)
+        vc = cv2.VideoCapture(ARGS.videos_path + filename)
+        _, img = vc.read()
 
         # i = 0
         # while img is not None:
@@ -153,7 +154,6 @@ for filename in os.listdir(ARGS.videos_path):
         SHs = np.zeros((frames, 9))
 
         for f in range(frames):
-            _, img = vc.read()
             if img is not None:
 
                 light_img, _, _, _ = preprocess_image(img, 2)
