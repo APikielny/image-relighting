@@ -143,7 +143,7 @@ if (ARGS.gpu):
 i = 1
 dataDict = {}
 for filename in os.listdir(ARGS.videos_path):
-    if filename.endswith(".avi"):
+    if filename.endswith(".avi") or filename.endswith(".MP4"):
         # create video reader and writer
         vc = cv2.VideoCapture(filename)
 
