@@ -20,6 +20,7 @@ import cv2
 import argparse
 import matplotlib.pyplot as plt
 from scipy.io import savemat
+import re
 
 
 # This code is adapted from https://github.com/zhhoper/DPR
@@ -46,6 +47,11 @@ def parse_args():
         '--videos_path',
         default='',
         help='folder with videos to put in dictionary'
+    )
+    parser.add_argument(
+        '--fake_path',
+        default='',
+        help='path to fake to add to dictionary'
     )
     parser.add_argument(
         '--output_light_path',
@@ -140,10 +146,13 @@ my_network.train(False)
 if (ARGS.gpu):
     sh = sh.cuda()
 
+filePaths = os.listdir(ARGS.videos_path)
+filePaths.append(ARGS.fake_path)
+
 i = 1
 dataDict = {}
-for filename in os.listdir(ARGS.videos_path):
-    if filename.endswith(".avi") or filename.endswith(".MP4") or filename.endswith(".mp4"):
+for filename in filePaths:
+    if (filename.endswith(".avi") or filename.endswith(".MP4")) and re.search("camera\d.MP4", filename) is not None:
         # create video reader and writer
         vc = cv2.VideoCapture(ARGS.videos_path + filename)
         _, img = vc.read()
@@ -167,8 +176,11 @@ for filename in os.listdir(ARGS.videos_path):
 
 
                 _, img = vc.read()
-        dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
-        i += 1
+        if (filename == ARGS.fake_path):
+            dataDict['fake'] = (SHs - np.mean(SHs)) / np.std(SHs)
+        else:
+            dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
+            i += 1
 
 print(dataDict)
 savemat(ARGS.mat_path, dataDict)
