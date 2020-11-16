@@ -1,6 +1,6 @@
 #Adam Pikielny
 #Fall 2020
-#analyze lighting of a face, outputting SH coordinates (by plotting, sphere, or array)
+#analyze lighting of a face, outputting SH coordinates into a matlab file
 
 import sys
 sys.path.append('model')
@@ -19,6 +19,7 @@ import torch
 import cv2
 import argparse
 import matplotlib.pyplot as plt
+from scipy.io import savemat
 
 
 # This code is adapted from https://github.com/zhhoper/DPR
@@ -42,9 +43,9 @@ def parse_args():
         help='Options: "both" or "light". Face detection/cropping for more accurate relighting.'
     )
     parser.add_argument(
-        '--video_path',
-        default='/video.avi',
-        help='video path to analyze'
+        '--videos_path',
+        default='',
+        help='folder with videos to put in dictionary'
     )
     parser.add_argument(
         '--output_light_path',
@@ -62,6 +63,11 @@ def parse_args():
         '--frames',
         default = 30,
         help='number of frames to analyze'
+    )
+    parser.add_argument(
+        '--mat_path',
+        default='',
+        help='output .mat file path'
     )
     
 
@@ -130,62 +136,37 @@ else:
 
 my_network.train(False)
 
-# create video reader and writer
-if (ARGS.video_path is not None):
-    vc = cv2.VideoCapture(ARGS.video_path)
-else:
-    pass
 
 if (ARGS.gpu):
     sh = sh.cuda()
 
-if (ARGS.output_light_path is not None):
-    videoWriter = cv2.VideoWriter(ARGS.output_light_path,cv2.VideoWriter_fourcc(*'MJPG'), 30, (256,256))
+i = 1
+dataDict = {}
+for filename in os.listdir(ARGS.videos_path):
+    if filename.endswith(".avi"):
+        # create video reader and writer
+        vc = cv2.VideoCapture(filename)
 
-SHs = []
-squashedOutput = [] #for plotting
+        _, img = vc.read()
+        # i = 0
+        # while img is not None:
+        frames = ARGS.frames
+        SHs = np.zeros((frames, 9))
 
-_, img = vc.read()
-# i = 0
-# while img is not None:
-frames = ARGS.frames
-for f in range(frames):
-    light_img, _, _, _ = preprocess_image(img, 2)
+        for f in range(frames):
+            light_img, _, _, _ = preprocess_image(img, 2)
 
-    sh = torch.zeros((1,9,1,1))
+            sh = torch.zeros((1,9,1,1))
 
-    _, outputSH  = my_network(light_img, sh, 0)
-    SHs.append(outputSH)
-    squashedOutput.append(torch.reshape(outputSH, (9,)).cpu().data.numpy())
+            _, outputSH  = my_network(light_img, sh, 0)
+            # SHs.append(outputSH)
+            # squashedOutput.append(torch.reshape(outputSH, (9,)).cpu().data.numpy())
+            SHs[f] = torch.reshape(outputSH, (9,)).cpu().data.numpy()
 
 
-    ##########
-    # rendering SH coords as sphere image/video
-    # frame = render_half_sphere(outputSH.cpu().data.numpy())
+            _, img = vc.read()
+        dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
+        i += 1
 
-    # cv2.imwrite('/Users/Adam/Desktop/brown/junior/cs1970/image-relighting/analyzeLightPics/frame' + str(i) + '.jpg', frame)
-    # i += 1
-
-    # frame = (frame*255).astype('uint8')
-    # videoWriter.write(frame)
-    ##########
-
-    _, img = vc.read()
-
-# if videoWriter is not None:
-#     videoWriter.release()
-# print(SHs)
-
-mean = torch.mean(torch.stack(SHs), dim = 0)
-var = torch.var(torch.stack(SHs), dim = 0)
-print("mean of SHs:", mean)
-print("var of SHs:", var)
-
-if (ARGS.plot_path is not None):
-    plt.plot(squashedOutput)
-    plt.title('SHs over first ' + str(frames) + ' frames, for video: ' + ARGS.video_path)
-    plt.xlabel('Frame')
-    plt.savefig(ARGS.plot_path)
-
-# frame = render_half_sphere(mean.cpu().data.numpy())
-# cv2.imwrite(ARGS.output_sphere, frame)
+print(dataDict)
+savemat(ARGS.mat_path, dataDict)
