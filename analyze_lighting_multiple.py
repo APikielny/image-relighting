@@ -156,6 +156,9 @@ for filename in filePaths:
         # create video reader and writer
         vc = cv2.VideoCapture(ARGS.videos_path + filename)
         _, img = vc.read()
+        if img is None:
+            vc = cv2.VideoCapture(filename)
+            _, img = vc.read()
 
         # i = 0
         # while img is not None:
