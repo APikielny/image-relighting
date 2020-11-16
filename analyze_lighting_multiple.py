@@ -147,24 +147,26 @@ for filename in os.listdir(ARGS.videos_path):
         # create video reader and writer
         vc = cv2.VideoCapture(filename)
 
-        _, img = vc.read()
         # i = 0
         # while img is not None:
         frames = ARGS.frames
         SHs = np.zeros((frames, 9))
 
         for f in range(frames):
-            light_img, _, _, _ = preprocess_image(img, 2)
-
-            sh = torch.zeros((1,9,1,1))
-
-            _, outputSH  = my_network(light_img, sh, 0)
-            # SHs.append(outputSH)
-            # squashedOutput.append(torch.reshape(outputSH, (9,)).cpu().data.numpy())
-            SHs[f] = torch.reshape(outputSH, (9,)).cpu().data.numpy()
-
-
             _, img = vc.read()
+            if img is not None:
+
+                light_img, _, _, _ = preprocess_image(img, 2)
+
+                sh = torch.zeros((1,9,1,1))
+
+                _, outputSH  = my_network(light_img, sh, 0)
+                # SHs.append(outputSH)
+                # squashedOutput.append(torch.reshape(outputSH, (9,)).cpu().data.numpy())
+                SHs[f] = torch.reshape(outputSH, (9,)).cpu().data.numpy()
+
+
+                _, img = vc.read()
         dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
         i += 1
 
