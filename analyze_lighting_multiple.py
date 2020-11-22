@@ -162,7 +162,7 @@ for filename in filePaths:
 
         # i = 0
         # while img is not None:
-        frames = ARGS.frames
+        frames = int(ARGS.frames)
         SHs = np.zeros((frames, 9))
 
         for f in range(frames):
