@@ -185,5 +185,5 @@ for filename in filePaths:
             dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
             i += 1
 
-print(dataDict)
+# print(dataDict)
 savemat(ARGS.mat_path, dataDict)

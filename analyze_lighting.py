@@ -19,6 +19,8 @@ import torch
 import cv2
 import argparse
 import matplotlib.pyplot as plt
+from pyshtools import rotate
+
 
 
 # This code is adapted from https://github.com/zhhoper/DPR
@@ -146,7 +148,7 @@ SHs = []
 squashedOutput = [] #for plotting
 
 _, img = vc.read()
-# i = 0
+i = 0
 # while img is not None:
 frames = ARGS.frames
 for f in range(frames):
@@ -161,10 +163,10 @@ for f in range(frames):
 
     ##########
     # rendering SH coords as sphere image/video
-    # frame = render_half_sphere(outputSH.cpu().data.numpy())
+    frame = render_half_sphere(outputSH.cpu().data.numpy())
 
     # cv2.imwrite('/Users/Adam/Desktop/brown/junior/cs1970/image-relighting/analyzeLightPics/frame' + str(i) + '.jpg', frame)
-    # i += 1
+    i += 1
 
     # frame = (frame*255).astype('uint8')
     # videoWriter.write(frame)
@@ -178,14 +180,29 @@ for f in range(frames):
 
 mean = torch.mean(torch.stack(SHs), dim = 0)
 var = torch.var(torch.stack(SHs), dim = 0)
-print("mean of SHs:", mean)
-print("var of SHs:", var)
 
-if (ARGS.plot_path is not None):
-    plt.plot(squashedOutput)
-    plt.title('SHs over first ' + str(frames) + ' frames, for video: ' + ARGS.video_path)
-    plt.xlabel('Frame')
-    plt.savefig(ARGS.plot_path)
+#### rotating the SH coords
+print("sh coords shape", mean.cpu().data.numpy().shape)
 
-# frame = render_half_sphere(mean.cpu().data.numpy())
-# cv2.imwrite(ARGS.output_sphere, frame)
+
+lmax = 1
+rcoeffs = np.random.normal(size=(2, lmax + 1, lmax + 1))
+print("rcoeffs shape", rcoeffs.shape)
+cv2.imwrite('testPreRotate.jpg', rcoeffs)
+dj_matrix = rotate.djpi2(lmax)
+angles = np.radians([20, 20, 20])
+rotated = rotate.SHRotateRealCoef(rcoeffs, angles, dj_matrix)
+cv2.imwrite('testPostRotate.jpg', rotated)
+####
+
+# print("mean of SHs:", mean)
+# print("var of SHs:", var)
+
+# if (ARGS.plot_path is not None):
+#     plt.plot(squashedOutput)
+#     plt.title('SHs over first ' + str(frames) + ' frames, for video: ' + ARGS.video_path)
+#     plt.xlabel('Frame')
+#     plt.savefig(ARGS.plot_path)
+
+frame = render_half_sphere(mean.cpu().data.numpy())
+cv2.imwrite(ARGS.output_sphere, frame)
