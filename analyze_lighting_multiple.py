@@ -180,9 +180,11 @@ for filename in filePaths:
 
                 _, img = vc.read()
         if (filename == ARGS.fake_path):
-            dataDict['fake'] = (SHs - np.mean(SHs)) / np.std(SHs)
+            # dataDict['fake'] = (SHs - np.mean(SHs)) / np.std(SHs)
+            dataDict['fake'] = SHs
         else:
-            dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
+            # dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
+            dataDict['cam' + str(i)] = SHs
             i += 1
 
 # print(dataDict)
