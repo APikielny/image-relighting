@@ -149,7 +149,7 @@ if (ARGS.gpu):
 filePaths = os.listdir(ARGS.videos_path)
 filePaths.append(ARGS.fake_path)
 
-i = 1
+i = 0
 dataDict = {}
 for filename in filePaths:
     if (filename == ARGS.fake_path) or ((filename.endswith(".avi") or filename.endswith(".MP4") or filename.endswith(".mp4")) and (re.search("camera\d.MP4", filename) is not None or re.search("cam\d.avi", filename) is not None)):
@@ -180,11 +180,11 @@ for filename in filePaths:
 
                 _, img = vc.read()
         if (filename == ARGS.fake_path):
-            # dataDict['fake'] = (SHs - np.mean(SHs)) / np.std(SHs)
-            dataDict['fake'] = SHs
+            dataDict['fake'] = (SHs - np.mean(SHs)) / np.std(SHs)
+            # dataDict['fake'] = SHs
         else:
-            # dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
-            dataDict['cam' + str(i)] = SHs
+            dataDict['cam' + str(i)] = (SHs - np.mean(SHs)) / np.std(SHs)
+            # dataDict['cam' + str(i)] = SHs
             i += 1
 
 # print(dataDict)
