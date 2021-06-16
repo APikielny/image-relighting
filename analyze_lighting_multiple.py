@@ -152,7 +152,7 @@ filePaths.append(ARGS.fake_path)
 i = 0
 dataDict = {}
 for filename in filePaths:
-    if (filename == ARGS.fake_path) or ((filename.endswith(".avi") or filename.endswith(".MP4") or filename.endswith(".mp4")) and (re.search("camera\d.MP4", filename) is not None or re.search("cam\d.avi", filename) is not None)):
+    if (filename == ARGS.fake_path) or ((filename.endswith(".avi") or filename.endswith(".MP4") or filename.endswith(".mp4")) and (re.search("camera\d.MP4", filename) is not None or re.search("cam\d.avi", filename) is not None or re.search("camera\d.mp4", filename) is not None)):
         # create video reader and writer
         vc = cv2.VideoCapture(ARGS.videos_path + filename)
         _, img = vc.read()
